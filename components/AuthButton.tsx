@@ -30,7 +30,7 @@ export default async function AuthButton() {
   return user ? (
     <div className="flex items-center gap-4">
       {profile && (
-        <Link href="/" className="hover:underline">
+        <Link href="/profile" className="hover:underline">
           {profile.first_name} {profile.last_name}
         </Link>
       )}
