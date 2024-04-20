@@ -17,18 +17,18 @@ export async function createProfile(data: createProfileType) {
     return 'User not found';
   }
 
-  const profile = await prisma.user_profile.create({
-    data: {
-      user_id: userData.user.id,
-      first_name: parserdData.data.firstName,
-      last_name: parserdData.data.lastName,
-      organization: parserdData.data.organization,
-      user_role: parserdData.data.role,
-    },
-  });
-
-  if (!profile) {
-    return 'Profile not created';
+  try {
+    const profile = await prisma.user_profile.create({
+      data: {
+        user_id: userData.user.id,
+        first_name: parserdData.data.firstName,
+        last_name: parserdData.data.lastName,
+        organization: parserdData.data.organization,
+        user_role: parserdData.data.role,
+      },
+    });
+  } catch (error) {
+    return 'Unexpected error';
   }
 
   redirect('/dashboard');

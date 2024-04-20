@@ -13,11 +13,16 @@ export default async function DashboardPage() {
     return redirect('/login');
   }
 
-  const profile = await prisma.user_profile.findUnique({
-    where: {
-      user_id: user.id,
-    },
-  });
+  let profile;
+  try {
+    profile = await prisma.user_profile.findUnique({
+      where: {
+        user_id: user.id,
+      },
+    });
+  } catch (error) {
+    return redirect('/createProfile');
+  }
 
   if (!profile) {
     return redirect('/createProfile');

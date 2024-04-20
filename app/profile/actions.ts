@@ -19,11 +19,15 @@ export async function deleteProfile() {
     return 'Unexpected error';
   }
 
-  await prisma.user_profile.delete({
-    where: {
-      user_id: user.id,
-    },
-  });
+  try {
+    await prisma.user_profile.delete({
+      where: {
+        user_id: user.id,
+      },
+    });
+  } catch (error) {
+    return 'Unexpected error';
+  }
 
   supabase.auth.signOut();
 
@@ -63,15 +67,19 @@ export async function editProfile(data: editProfileType) {
     return 'Unexpected error';
   }
 
-  await prisma.user_profile.update({
-    where: {
-      user_id: user.id,
-    },
-    data: {
-      first_name: data.firstName,
-      last_name: data.lastName,
-    },
-  });
+  try {
+    await prisma.user_profile.update({
+      where: {
+        user_id: user.id,
+      },
+      data: {
+        first_name: data.firstName,
+        last_name: data.lastName,
+      },
+    });
+  } catch (error) {
+    return 'Unexpected error';
+  }
 
   return 'Profile updated successfully';
 }
