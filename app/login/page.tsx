@@ -10,16 +10,17 @@ export default function Login({
   searchParams: { registerSuccess: boolean };
 }) {
   return (
-    <div className="w-screen h-screen flex flex-col justify-center items-center relative">
+    <div className="w-screen flex flex-col justify-center items-center relative">
       {searchParams.registerSuccess && (
-        <Alert className="absolute top-0">
+        <Alert className="absolute top-2">
           <AlertTitle>Registration successful</AlertTitle>
           <AlertDescription>
             Please check your email to verify your account.
           </AlertDescription>
         </Alert>
       )}
-      <Tabs defaultValue="login" className="w-96">
+
+      <Tabs defaultValue="login" className="w-96 mt-36">
         <TabsList className="w-96">
           <TabsTrigger value="login">Login</TabsTrigger>
           <TabsTrigger value="register">Register</TabsTrigger>
