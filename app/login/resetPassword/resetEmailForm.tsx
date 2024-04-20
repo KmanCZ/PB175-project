@@ -1,5 +1,4 @@
 'use client';
-import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
@@ -12,39 +11,50 @@ import {
   FormControl,
   FormMessage,
 } from '@/components/ui/form';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { login } from './actions';
-import { loginSchema, loginType } from './schemas';
-import { useState } from 'react';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card';
+import { resetEmailSchema, resetEmailType } from './schemas';
+import { sentEmail } from './actions';
 import { toast } from 'sonner';
+import { useState } from 'react';
+import Link from 'next/link';
 
-export default function LoginForm() {
+export default function ResetEmailForm() {
   const [pending, setPending] = useState(false);
-  const form = useForm<loginType>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<resetEmailType>({
+    resolver: zodResolver(resetEmailSchema),
     defaultValues: {
       email: '',
-      password: '',
     },
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    if (pending) return;
     setPending(true);
-    const error = await login(data);
+    const error = await sentEmail(data);
     setPending(false);
-    toast(error);
+    if (error) {
+      return toast(error);
+    }
   });
 
   return (
-    <Card>
+    <Card className="w-96 mx-auto mt-40">
       <CardHeader>
-        <CardTitle>Login</CardTitle>
+        <CardTitle>Sent email for password reset</CardTitle>
+        <CardDescription>
+          Enter your email address under which you created profile to receive a
+          password reset link.
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-3 justify-center">
         <Form {...form}>
           <form
-            method="POST"
+            action=""
             className="flex flex-col gap-3 justify-center"
             onSubmit={onSubmit}
           >
@@ -61,30 +71,14 @@ export default function LoginForm() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="password" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <Button type="submit" disabled={pending}>
-              Login
+              Send Email
             </Button>
+            <Link href="/login" className="text-center hover:underline">
+              Back to login
+            </Link>
           </form>
         </Form>
-        <Link
-          href="/login/resetPassword"
-          className="text-center hover:underline"
-        >
-          Reset password
-        </Link>
       </CardContent>
     </Card>
   );

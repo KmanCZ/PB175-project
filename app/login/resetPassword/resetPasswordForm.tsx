@@ -1,5 +1,4 @@
 'use client';
-import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
@@ -13,49 +12,50 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { login } from './actions';
-import { loginSchema, loginType } from './schemas';
-import { useState } from 'react';
+import { resetPasswordSchema, resetPasswordType } from './schemas';
+import { resetPassword } from './actions';
 import { toast } from 'sonner';
+import { useState } from 'react';
 
-export default function LoginForm() {
+export default function ResetPasswordForm({ token }: { token: string }) {
   const [pending, setPending] = useState(false);
-  const form = useForm<loginType>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<resetPasswordType>({
+    resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      email: '',
       password: '',
+      confirmPassword: '',
     },
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    if (pending) return;
     setPending(true);
-    const error = await login(data);
+    const error = await resetPassword(token, data);
     setPending(false);
-    toast(error);
+    if (error) {
+      return toast(error);
+    }
   });
 
   return (
-    <Card>
+    <Card className="w-96 mx-auto mt-40">
       <CardHeader>
-        <CardTitle>Login</CardTitle>
+        <CardTitle>Reset password</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-3 justify-center">
         <Form {...form}>
           <form
-            method="POST"
+            action=""
             className="flex flex-col gap-3 justify-center"
             onSubmit={onSubmit}
           >
             <FormField
               control={form.control}
-              name="email"
+              name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>New password</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="user@email.com" />
+                    <Input {...field} type="password" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -63,10 +63,10 @@ export default function LoginForm() {
             />
             <FormField
               control={form.control}
-              name="password"
+              name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Password Again</FormLabel>
                   <FormControl>
                     <Input {...field} type="password" />
                   </FormControl>
@@ -75,16 +75,10 @@ export default function LoginForm() {
               )}
             />
             <Button type="submit" disabled={pending}>
-              Login
+              Reset Password
             </Button>
           </form>
         </Form>
-        <Link
-          href="/login/resetPassword"
-          className="text-center hover:underline"
-        >
-          Reset password
-        </Link>
       </CardContent>
     </Card>
   );
