@@ -1,5 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -8,13 +8,34 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-///////////////////////////// PUBLIC SCHEMA //////////////////////////////////////////////
-
 model user_profile {
-  user_id    String @id @db.Uuid
-  first_name String
-  last_name  String
-  user_role  role
+  user_id       String               @id @db.Uuid
+  first_name    String
+  last_name     String
+  user_role     role
+  todos         todo[]
+  asigned_todos todo_assignee_user[]
+}
+
+model todo {
+  id              String               @id @db.Uuid
+  name            String
+  description     String?
+  deadline        DateTime?
+  accepted        Boolean              @default(false)
+  created_by      String               @db.Uuid
+  created_by_user user_profile         @relation(fields: [created_by], references: [user_id])
+  last_updated    DateTime             @updatedAt
+  assignees       todo_assignee_user[]
+}
+
+model todo_assignee_user {
+  todo_id String       @db.Uuid
+  user_id String       @db.Uuid
+  todo    todo         @relation(fields: [todo_id], references: [id])
+  user    user_profile @relation(fields: [user_id], references: [user_id])
+
+  @@id([todo_id, user_id])
 }
 
 enum role {
