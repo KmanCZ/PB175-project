@@ -31,10 +31,11 @@ model todo {
 }
 
 model todo_assignee_user {
-  todo_id String       @db.Uuid
-  user_id String       @db.Uuid
-  todo    todo         @relation(fields: [todo_id], references: [id])
-  user    user_profile @relation(fields: [user_id], references: [user_id])
+  todo_id   String       @db.Uuid
+  user_id   String       @db.Uuid
+  completed Boolean      @default(false)
+  todo      todo         @relation(fields: [todo_id], references: [id])
+  user      user_profile @relation(fields: [user_id], references: [user_id])
 
   @@id([todo_id, user_id])
 }
