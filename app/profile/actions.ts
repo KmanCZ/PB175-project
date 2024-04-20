@@ -2,14 +2,76 @@
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import prisma from '@/utils/prisma/client';
-import { changePasswordType, editProfileType } from './schemas';
+import {
+  changePasswordSchema,
+  changePasswordType,
+  editProfileSchema,
+  editProfileType,
+} from './schemas';
 
-export async function deleteProfile() {}
+export async function deleteProfile() {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return 'Unexpected error';
+  }
+
+  await prisma.user_profile.delete({
+    where: {
+      user_id: user.id,
+    },
+  });
+
+  supabase.auth.signOut();
+
+  return redirect('/login');
+}
 
 export async function changePassword(data: changePasswordType) {
-  return 'Not implemented';
+  const parsedData = changePasswordSchema.safeParse(data);
+  if (!parsedData.success) {
+    return 'Invalid data';
+  }
+
+  const supabase = createClient();
+  const { error } = await supabase.auth.updateUser({
+    password: data.password,
+  });
+
+  if (error) {
+    return 'Unexpected error';
+  }
+
+  return 'Password changed successfully';
 }
 
 export async function editProfile(data: editProfileType) {
-  return 'Not implemented';
+  const parsedData = editProfileSchema.safeParse(data);
+  if (!parsedData.success) {
+    return 'Invalid data';
+  }
+
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return 'Unexpected error';
+  }
+
+  await prisma.user_profile.update({
+    where: {
+      user_id: user.id,
+    },
+    data: {
+      first_name: data.firstName,
+      last_name: data.lastName,
+    },
+  });
+
+  return 'Profile updated successfully';
 }

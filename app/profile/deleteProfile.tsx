@@ -14,6 +14,10 @@ export default async function DeleteProfile() {
       <CardHeader>
         <CardTitle>Delete Profile</CardTitle>
         <CardDescription>This action cannot be undone.</CardDescription>
+        <CardDescription>
+          This deletes only credentials passt after registation. For full
+          deletion contact support
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex justify-center">
         <form action={deleteProfile}>
