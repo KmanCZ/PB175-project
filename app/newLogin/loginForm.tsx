@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
@@ -14,25 +13,27 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
-const schema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-});
-
-type schemaType = z.infer<typeof schema>;
+import { login } from './actions';
+import { loginSchema, loginType } from './schemas';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 export default function LoginForm() {
-  const form = useForm<schemaType>({
-    resolver: zodResolver(schema),
+  const [pending, setPending] = useState(false);
+  const form = useForm<loginType>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  const onSubmit = form.handleSubmit((data) => {
-    console.log(data);
+  const onSubmit = form.handleSubmit(async (data) => {
+    if (pending) return;
+    setPending(true);
+    const error = await login(data);
+    setPending(false);
+    toast(error);
   });
 
   return (
@@ -43,7 +44,7 @@ export default function LoginForm() {
       <CardContent className="flex flex-col gap-3 justify-center">
         <Form {...form}>
           <form
-            action=""
+            method="POST"
             className="flex flex-col gap-3 justify-center"
             onSubmit={onSubmit}
           >
@@ -73,7 +74,9 @@ export default function LoginForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit">Login</Button>
+            <Button type="submit" disabled={pending}>
+              Login
+            </Button>
           </form>
         </Form>
         <Link href="/" className="text-center hover:underline">

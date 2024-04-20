@@ -1,5 +1,4 @@
 'use client';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
@@ -13,23 +12,15 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
-const schema = z
-  .object({
-    email: z.string().email(),
-    password: z.string().min(8),
-    passwordAgain: z.string().min(8),
-  })
-  .refine((data) => data.password === data.passwordAgain, {
-    message: 'Passwords do not match',
-    path: ['passwordAgain'],
-  });
-
-type schemaType = z.infer<typeof schema>;
+import { registerSchema, registerType } from './schemas';
+import { register } from './actions';
+import { toast } from 'sonner';
+import { useState } from 'react';
 
 export default function RegisterForm() {
-  const form = useForm<schemaType>({
-    resolver: zodResolver(schema),
+  const [pending, setPending] = useState(false);
+  const form = useForm<registerType>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       email: '',
       password: '',
@@ -37,8 +28,13 @@ export default function RegisterForm() {
     },
   });
 
-  const onSubmit = form.handleSubmit((data) => {
-    console.log(data);
+  const onSubmit = form.handleSubmit(async (data) => {
+    setPending(true);
+    const error = await register(data);
+    setPending(false);
+    if (error) {
+      return toast(error);
+    }
   });
 
   return (
@@ -92,7 +88,9 @@ export default function RegisterForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit">Register</Button>
+            <Button type="submit" disabled={pending}>
+              Register
+            </Button>
           </form>
         </Form>
       </CardContent>
