@@ -47,5 +47,5 @@ export async function register(formData: registerType) {
     return 'Could not authenticate user';
   }
 
-  redirect('/newLogin?registerSuccess=true');
+  redirect('/login?registerSuccess=true');
 }
