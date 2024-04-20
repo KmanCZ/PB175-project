@@ -13,6 +13,7 @@ model user_profile {
   first_name    String
   last_name     String
   user_role     role
+  organization  String
   todos         todo[]
   asigned_todos todo_assignee_user[]
 }
