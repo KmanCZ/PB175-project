@@ -2,6 +2,7 @@ import AuthButton from '../components/AuthButton';
 import { GeistSans } from 'geist/font/sans';
 import './globals.css';
 import Link from 'next/link';
+import { Toaster } from '@/components/ui/sonner';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -32,6 +33,7 @@ export default function RootLayout({
           </nav>
           {children}
         </main>
+        <Toaster />
       </body>
     </html>
   );

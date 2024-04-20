@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import prisma from '@/utils/prisma/client';
 
 export default async function AuthButton() {
   const supabase = createClient();
@@ -8,6 +9,15 @@ export default async function AuthButton() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  let profile = null;
+  if (user) {
+    profile = await prisma.user_profile.findUnique({
+      where: {
+        user_id: user.id,
+      },
+    });
+  }
 
   const signOut = async () => {
     'use server';
@@ -19,9 +29,11 @@ export default async function AuthButton() {
 
   return user ? (
     <div className="flex items-center gap-4">
-      <Link href="/" className="hover:underline">
-        {user.email}
-      </Link>
+      {profile && (
+        <Link href="/" className="hover:underline">
+          {profile.first_name} {profile.last_name}
+        </Link>
+      )}
       <form action={signOut}>
         <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:underline">
           Logout

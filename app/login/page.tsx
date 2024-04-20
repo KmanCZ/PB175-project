@@ -1,14 +1,24 @@
 import LoginForm from './loginForm';
 import RegisterForm from './registerForm';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Toaster } from '@/components/ui/sonner';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
 
-export default function Login({
+export default async function Login({
   searchParams,
 }: {
   searchParams: { registerSuccess: boolean };
 }) {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    return redirect('/dashboard');
+  }
+
   return (
     <div className="w-screen flex flex-col justify-center items-center relative">
       {searchParams.registerSuccess && (
@@ -32,7 +42,6 @@ export default function Login({
           <RegisterForm />
         </TabsContent>
       </Tabs>
-      <Toaster />
     </div>
   );
 }

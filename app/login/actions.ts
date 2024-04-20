@@ -25,7 +25,7 @@ export async function login(formData: loginType) {
     return 'Could not authenticate user';
   }
 
-  redirect('/protected');
+  redirect('/dashboard');
 }
 
 export async function register(formData: registerType) {
