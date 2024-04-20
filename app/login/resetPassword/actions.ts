@@ -40,7 +40,6 @@ export async function resetPassword(token: string, data: resetPasswordType) {
   });
 
   if (error) {
-    console.error(error);
     return 'Could not reset password';
   }
 
