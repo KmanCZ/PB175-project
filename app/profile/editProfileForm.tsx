@@ -75,7 +75,7 @@ export default function EditProfileForm({ user }: { user: editProfileType }) {
               )}
             />
             <Button type="submit" disabled={pending}>
-              Change Password
+              Edit informaton
             </Button>
           </form>
         </Form>

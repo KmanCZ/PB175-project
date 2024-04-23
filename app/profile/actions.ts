@@ -8,6 +8,7 @@ import {
   editProfileSchema,
   editProfileType,
 } from './schemas';
+import { revalidatePath } from 'next/cache';
 
 export async function deleteProfile() {
   const supabase = createClient();
@@ -81,5 +82,6 @@ export async function editProfile(data: editProfileType) {
     return 'Unexpected error';
   }
 
+  revalidatePath('/', 'layout');
   return 'Profile updated successfully';
 }
