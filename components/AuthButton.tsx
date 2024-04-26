@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import prisma from '@/utils/prisma/client';
+import { getUser } from '@/utils/prisma/getUser';
 
 export default async function AuthButton() {
   const supabase = createClient();
@@ -12,17 +12,8 @@ export default async function AuthButton() {
 
   let profile = null;
   if (user) {
-    try {
-      profile = await prisma.user_profile.findUnique({
-        where: {
-          user_id: user.id,
-        },
-      });
-    } catch (error) {
-      profile = null;
-    }
+    profile = await getUser(user.id);
   }
-
 
   const signOut = async () => {
     'use server';

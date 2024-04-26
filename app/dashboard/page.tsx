@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
-import prisma from '@/utils/prisma/client';
+import { getUser } from '@/utils/prisma/getUser';
 
 export default async function DashboardPage() {
   const supabase = createClient();
@@ -13,27 +13,20 @@ export default async function DashboardPage() {
     return redirect('/login');
   }
 
-  try {
-    const profile = await prisma.user_profile.findUnique({
-      where: {
-        user_id: user.id,
-      },
-    });
+  const profile = await getUser(user.id);
 
-    if (!profile) {
-      return redirect('/createProfile');
-    }
-
-    return (
-      <div className="text-center">
-        <h1 className="text-4xl mt-5">Protectet page</h1>
-        <p>
-          Welcome, {profile.first_name} {profile.last_name}
-        </p>
-        <p>This page is under construction.</p>
-      </div>
-    );
-  } catch (error) {
-    return redirect('/');
+  if (!profile) {
+    return redirect('/createProfile');
   }
+
+  return (
+    <div className="text-center">
+      <h1 className="text-4xl mt-5">Protectet page</h1>
+      <p>
+        Welcome, {profile.first_name} {profile.last_name}
+      </p>
+      <p>This page is under construction.</p>
+    </div>
+  );
+
 }
