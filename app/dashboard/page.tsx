@@ -1,7 +1,6 @@
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import prisma from '@/utils/prisma/client';
-import { toast } from 'sonner';
 
 export default async function DashboardPage() {
   const supabase = createClient();
@@ -15,7 +14,7 @@ export default async function DashboardPage() {
   }
 
   try {
-    const profile = await prisma.user_profile.findFirst({
+    const profile = await prisma.user_profile.findUnique({
       where: {
         user_id: user.id,
       },
@@ -35,7 +34,6 @@ export default async function DashboardPage() {
       </div>
     );
   } catch (error) {
-    toast('Unexpected error occurred');
     return redirect('/');
   }
 }

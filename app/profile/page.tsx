@@ -4,7 +4,6 @@ import prisma from '@/utils/prisma/client';
 import DeleteProfile from './deleteProfile';
 import ChangePasswordForm from './changePasswordForm';
 import EditProfileForm from './editProfileForm';
-import { toast } from 'sonner';
 
 export default async function ProfilePage() {
   const supabase = createClient();
@@ -17,7 +16,7 @@ export default async function ProfilePage() {
   }
 
   try {
-    const profile = await prisma.user_profile.findFirst({
+    const profile = await prisma.user_profile.findUnique({
       where: {
         user_id: user.id,
       },
@@ -38,7 +37,6 @@ export default async function ProfilePage() {
       </div>
     );
   } catch (error) {
-    toast('Unexpected error occurred');
     return redirect('/');
   }
 }
