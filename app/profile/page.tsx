@@ -22,8 +22,8 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div className="w-screen flex flex-col items-center gap-3 my-3">
-      <h1 className="text-2xl font-bold">Profile Settings</h1>
+    <div className='w-screen flex flex-col items-center gap-3 my-3'>
+      <h1 className='text-2xl font-bold'>Profile Settings</h1>
       <EditProfileForm
         user={{ firstName: profile.first_name, lastName: profile.last_name }}
       />

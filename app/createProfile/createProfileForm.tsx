@@ -44,25 +44,25 @@ export default function CreateProfileForm() {
   });
 
   return (
-    <Card className="w-96 mx-auto mt-28">
+    <Card className='w-96 mx-auto mt-28'>
       <CardHeader>
         <CardTitle>Create Profile</CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-3 justify-center">
+      <CardContent className='flex flex-col gap-3 justify-center'>
         <Form {...form}>
           <form
-            method="POST"
-            className="flex flex-col gap-3 justify-center"
+            method='POST'
+            className='flex flex-col gap-3 justify-center'
             onSubmit={onSubmit}
           >
             <FormField
               control={form.control}
-              name="firstName"
+              name='firstName'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="John" />
+                    <Input {...field} placeholder='John' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -70,12 +70,12 @@ export default function CreateProfileForm() {
             />
             <FormField
               control={form.control}
-              name="lastName"
+              name='lastName'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Last Name</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Doe" />
+                    <Input {...field} placeholder='Doe' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -83,12 +83,12 @@ export default function CreateProfileForm() {
             />
             <FormField
               control={form.control}
-              name="organization"
+              name='organization'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Organization</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Acme Corp" />
+                    <Input {...field} placeholder='Acme Corp' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -96,7 +96,7 @@ export default function CreateProfileForm() {
             />
             <FormField
               control={form.control}
-              name="role"
+              name='role'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Role</FormLabel>
@@ -106,12 +106,12 @@ export default function CreateProfileForm() {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select your role in organization" />
+                        <SelectValue placeholder='Select your role in organization' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="employee">Employee</SelectItem>
-                      <SelectItem value="manager">Manager</SelectItem>
+                      <SelectItem value='employee'>Employee</SelectItem>
+                      <SelectItem value='manager'>Manager</SelectItem>
                     </SelectContent>
                   </Select>
 
@@ -119,7 +119,7 @@ export default function CreateProfileForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={pending}>
+            <Button type='submit' disabled={pending}>
               Create Profile
             </Button>
           </form>

@@ -20,13 +20,12 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="text-center">
-      <h1 className="text-4xl mt-5">Protectet page</h1>
+    <div className='text-center'>
+      <h1 className='text-4xl mt-5'>Protectet page</h1>
       <p>
         Welcome, {profile.first_name} {profile.last_name}
       </p>
       <p>This page is under construction.</p>
     </div>
   );
-
 }

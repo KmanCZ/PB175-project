@@ -12,8 +12,8 @@ export default async function Index() {
   }
 
   return (
-    <div className="text-center">
-      <h1 className="text-4xl mt-5">Main page</h1>
+    <div className='text-center'>
+      <h1 className='text-4xl mt-5'>Main page</h1>
       <p>This page is under construction.</p>
     </div>
   );

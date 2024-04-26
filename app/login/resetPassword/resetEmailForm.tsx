@@ -43,7 +43,7 @@ export default function ResetEmailForm() {
   });
 
   return (
-    <Card className="w-96 mx-auto mt-40">
+    <Card className='w-96 mx-auto mt-40'>
       <CardHeader>
         <CardTitle>Sent email for password reset</CardTitle>
         <CardDescription>
@@ -51,30 +51,30 @@ export default function ResetEmailForm() {
           password reset link.
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col gap-3 justify-center">
+      <CardContent className='flex flex-col gap-3 justify-center'>
         <Form {...form}>
           <form
-            action=""
-            className="flex flex-col gap-3 justify-center"
+            action=''
+            className='flex flex-col gap-3 justify-center'
             onSubmit={onSubmit}
           >
             <FormField
               control={form.control}
-              name="email"
+              name='email'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="user@email.com" />
+                    <Input {...field} placeholder='user@email.com' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={pending}>
+            <Button type='submit' disabled={pending}>
               Send Email
             </Button>
-            <Link href="/login" className="text-center hover:underline">
+            <Link href='/login' className='text-center hover:underline'>
               Back to login
             </Link>
           </form>

@@ -42,21 +42,21 @@ export default function RegisterForm() {
       <CardHeader>
         <CardTitle>Register</CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-3 justify-center">
+      <CardContent className='flex flex-col gap-3 justify-center'>
         <Form {...form}>
           <form
-            action=""
-            className="flex flex-col gap-3 justify-center"
+            action=''
+            className='flex flex-col gap-3 justify-center'
             onSubmit={onSubmit}
           >
             <FormField
               control={form.control}
-              name="email"
+              name='email'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="user@email.com" />
+                    <Input {...field} placeholder='user@email.com' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -64,12 +64,12 @@ export default function RegisterForm() {
             />
             <FormField
               control={form.control}
-              name="password"
+              name='password'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" />
+                    <Input {...field} type='password' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -77,18 +77,18 @@ export default function RegisterForm() {
             />
             <FormField
               control={form.control}
-              name="passwordAgain"
+              name='passwordAgain'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password Again</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" />
+                    <Input {...field} type='password' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={pending}>
+            <Button type='submit' disabled={pending}>
               Register
             </Button>
           </form>

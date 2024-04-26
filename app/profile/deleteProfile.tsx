@@ -10,7 +10,7 @@ import { deleteProfile } from './actions';
 
 export default async function DeleteProfile() {
   return (
-    <Card className="w-96">
+    <Card className='w-96'>
       <CardHeader>
         <CardTitle>Delete Profile</CardTitle>
         <CardDescription>This action cannot be undone.</CardDescription>
@@ -19,9 +19,9 @@ export default async function DeleteProfile() {
           deletion contact support
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex justify-center">
+      <CardContent className='flex justify-center'>
         <form action={deleteProfile}>
-          <Button variant="destructive" type="submit">
+          <Button variant='destructive' type='submit'>
             Delete Profile
           </Button>
         </form>

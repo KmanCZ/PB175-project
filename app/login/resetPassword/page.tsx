@@ -22,9 +22,9 @@ export default async function ResetPasswordPage({
   }
 
   return (
-    <div className="w-screen flex flex-col justify-center items-center relative">
+    <div className='w-screen flex flex-col justify-center items-center relative'>
       {searchParams.resetEmailSuccess && (
-        <Alert className="absolute top-2">
+        <Alert className='absolute top-2'>
           <AlertTitle>Email was send!</AlertTitle>
           <AlertDescription>Please check your email.</AlertDescription>
         </Alert>

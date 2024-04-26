@@ -37,25 +37,25 @@ export default function ChangePasswordForm() {
   });
 
   return (
-    <Card className="w-96">
+    <Card className='w-96'>
       <CardHeader>
         <CardTitle>Change password</CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-3 justify-center">
+      <CardContent className='flex flex-col gap-3 justify-center'>
         <Form {...form}>
           <form
-            action=""
-            className="flex flex-col gap-3 justify-center"
+            action=''
+            className='flex flex-col gap-3 justify-center'
             onSubmit={onSubmit}
           >
             <FormField
               control={form.control}
-              name="password"
+              name='password'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>New password</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" />
+                    <Input {...field} type='password' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -63,18 +63,18 @@ export default function ChangePasswordForm() {
             />
             <FormField
               control={form.control}
-              name="confirmPassword"
+              name='confirmPassword'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password Again</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" />
+                    <Input {...field} type='password' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={pending}>
+            <Button type='submit' disabled={pending}>
               Change Password
             </Button>
           </form>

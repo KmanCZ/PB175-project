@@ -37,20 +37,20 @@ export default function EditProfileForm({ user }: { user: editProfileType }) {
   });
 
   return (
-    <Card className="w-96">
+    <Card className='w-96'>
       <CardHeader>
         <CardTitle>Edit Profile</CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-3 justify-center">
+      <CardContent className='flex flex-col gap-3 justify-center'>
         <Form {...form}>
           <form
-            action=""
-            className="flex flex-col gap-3 justify-center"
+            action=''
+            className='flex flex-col gap-3 justify-center'
             onSubmit={onSubmit}
           >
             <FormField
               control={form.control}
-              name="firstName"
+              name='firstName'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>First Name</FormLabel>
@@ -63,7 +63,7 @@ export default function EditProfileForm({ user }: { user: editProfileType }) {
             />
             <FormField
               control={form.control}
-              name="lastName"
+              name='lastName'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Last Name</FormLabel>
@@ -74,7 +74,7 @@ export default function EditProfileForm({ user }: { user: editProfileType }) {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={pending}>
+            <Button type='submit' disabled={pending}>
               Edit informaton
             </Button>
           </form>
