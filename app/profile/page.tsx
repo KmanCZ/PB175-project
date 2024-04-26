@@ -17,7 +17,7 @@ export default async function ProfilePage() {
   }
 
   try {
-    const profile = await prisma.user_profile.findUnique({
+    const profile = await prisma.user_profile.findFirst({
       where: {
         user_id: user.id,
       },

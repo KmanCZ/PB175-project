@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import prisma from '@/utils/prisma/client';
+import { toast } from 'sonner';
 
 export default async function AuthButton() {
   const supabase = createClient();
@@ -12,12 +13,18 @@ export default async function AuthButton() {
 
   let profile = null;
   if (user) {
-    profile = await prisma.user_profile.findUnique({
-      where: {
-        user_id: user.id,
-      },
-    });
+    try {
+      profile = await prisma.user_profile.findFirst({
+        where: {
+          user_id: user.id,
+        },
+      });
+    } catch (error) {
+      toast('Unexpected error occurred');
+      profile = null;
+    }
   }
+
 
   const signOut = async () => {
     'use server';
