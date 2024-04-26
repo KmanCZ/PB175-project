@@ -19,7 +19,6 @@ export default async function AuthButton() {
         },
       });
     } catch (error) {
-      console.error(error);
       profile = null;
     }
   }
