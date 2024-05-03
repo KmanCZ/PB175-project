@@ -20,7 +20,7 @@ git clone https://github.com/KmanCZ/PB175-project.git
 3. Přesuňte se do projektové složky
 
 ```bash
-cd pb175-todo-app
+cd PB175-project
 ```
 
 4. Nainstalujte závislosti
