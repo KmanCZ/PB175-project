@@ -43,7 +43,12 @@ export async function register(formData: registerType) {
     },
   });
 
+  if (error && error.code === 'user_already_exists') {
+    return error.message;
+  }
+
   if (error) {
+    console.error(error);
     return 'Could not authenticate user';
   }
 

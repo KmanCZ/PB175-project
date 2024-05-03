@@ -33,7 +33,8 @@ export default function LoginForm() {
     setPending(true);
     const error = await login(data);
     setPending(false);
-    toast(error);
+    if (error)
+      toast(error);
   });
 
   return (

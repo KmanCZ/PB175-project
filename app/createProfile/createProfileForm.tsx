@@ -40,7 +40,8 @@ export default function CreateProfileForm() {
     setPending(true);
     const error = await createProfile(data);
     setPending(false);
-    toast(error);
+    if (error)
+      toast(error);
   });
 
   return (
