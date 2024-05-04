@@ -31,16 +31,11 @@ export default async function AuthButton() {
         </Link>
       )}
       <form action={signOut}>
-        <button className='hover:underline'>
-          Logout
-        </button>
+        <button className='hover:underline'>Logout</button>
       </form>
     </div>
   ) : (
-    <Link
-      href='/login'
-      className='hover:underline'
-    >
+    <Link href='/login' className='hover:underline'>
       Login
     </Link>
   );

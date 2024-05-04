@@ -34,7 +34,20 @@ export default function RootLayout({
           {children}
           <footer className='w-full flex absolute bottom-0 justify-center items-center border-t border-t-foreground/10 h-8 text-sm'>
             <span className='text-center'>
-              Created by <a href='https://is.muni.cz/auth/osoba/536526' className="hover:underline">Kristián Řehoř</a> & <a href='https://is.muni.cz/auth/osoba/536473' className="hover:underline">Lenka Janíková</a>
+              Created by{' '}
+              <a
+                href='https://is.muni.cz/auth/osoba/536526'
+                className='hover:underline'
+              >
+                Kristián Řehoř
+              </a>{' '}
+              &{' '}
+              <a
+                href='https://is.muni.cz/auth/osoba/536473'
+                className='hover:underline'
+              >
+                Lenka Janíková
+              </a>
             </span>
           </footer>
         </main>

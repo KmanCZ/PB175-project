@@ -36,7 +36,9 @@ export default function DeleteProfile() {
         <CardTitle>Delete Profile</CardTitle>
         <CardDescription>This action cannot be undone.</CardDescription>
         <CardDescription>
-          This option only deletes the credentials passed after the account registration (during account creation, such as name, surname, organisation and role). For full deletion contact the support team.
+          This option only deletes the credentials passed after the account
+          registration (during account creation, such as name, surname,
+          organisation and role). For full deletion contact the support team.
         </CardDescription>
       </CardHeader>
       <CardContent className='flex justify-center'>
@@ -55,7 +57,7 @@ export default function DeleteProfile() {
             <DialogFooter>
               <form onSubmit={onSubmit}>
                 <DialogClose asChild className='mr-3'>
-                  <Button type="button" variant="secondary">
+                  <Button type='button' variant='secondary'>
                     Close
                   </Button>
                 </DialogClose>
