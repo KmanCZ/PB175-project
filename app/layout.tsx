@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang='en' className={GeistSans.className}>
       <body className='bg-background text-foreground'>
-        <main className='h-screen'>
+        <main className='h-screen relative'>
           <nav className='w-full flex justify-center border-b border-b-foreground/10 h-16'>
             <div className='w-full max-w-4xl flex justify-between items-center p-3 text-sm'>
               <Link href='/' className='font-bold text-2xl'>
@@ -32,6 +32,11 @@ export default function RootLayout({
             </div>
           </nav>
           {children}
+          <footer className='w-full flex absolute bottom-0 justify-center items-center border-t border-t-foreground/10 h-8 text-sm'>
+            <span className='text-center'>
+              Created by <a href='https://is.muni.cz/auth/osoba/536526' className="hover:underline">Kristián Řehoř</a> & <a href='https://is.muni.cz/auth/osoba/536473' className="hover:underline">Lenka Janíková</a>
+            </span>
+          </footer>
         </main>
         <Toaster />
       </body>

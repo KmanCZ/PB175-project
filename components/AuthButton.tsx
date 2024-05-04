@@ -31,7 +31,7 @@ export default async function AuthButton() {
         </Link>
       )}
       <form action={signOut}>
-        <button className='py-2 px-4 rounded-md no-underline bg-btn-background hover:underline'>
+        <button className='hover:underline'>
           Logout
         </button>
       </form>
@@ -39,7 +39,7 @@ export default async function AuthButton() {
   ) : (
     <Link
       href='/login'
-      className='py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover'
+      className='hover:underline'
     >
       Login
     </Link>
