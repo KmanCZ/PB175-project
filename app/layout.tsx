@@ -3,6 +3,8 @@ import { GeistSans } from 'geist/font/sans';
 import './globals.css';
 import Link from 'next/link';
 import { Toaster } from '@/components/ui/sonner';
+import { ThemeProvider } from "@/components/theme-provider"
+import { ModeToggle } from '@/components/ModeTogle';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -22,13 +24,22 @@ export default function RootLayout({
   return (
     <html lang='en' className={GeistSans.className}>
       <body className='bg-background text-foreground'>
+      <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+      >
         <main className='h-screen relative'>
           <nav className='w-full flex justify-center border-b border-b-foreground/10 h-16'>
             <div className='w-full max-w-4xl flex justify-between items-center p-3 text-sm'>
               <Link href='/' className='font-bold text-2xl'>
                 TODO APP
               </Link>
-              <AuthButton />
+              <div className='flex items-center gap-3'>
+                <AuthButton />
+                <ModeToggle />
+              </div>
             </div>
           </nav>
           {children}
@@ -52,6 +63,7 @@ export default function RootLayout({
           </footer>
         </main>
         <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );
