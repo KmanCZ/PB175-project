@@ -30,7 +30,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
       >
-        <main className='h-screen relative'>
+        <main className='min-h-screen flex flex-col'>
           <nav className='w-full flex justify-center border-b border-b-foreground/10 h-16'>
             <div className='w-full max-w-4xl flex justify-between items-center p-3 text-sm'>
               <Link href='/' className='font-bold text-2xl'>
@@ -42,8 +42,10 @@ export default function RootLayout({
               </div>
             </div>
           </nav>
-          {children}
-          <footer className='w-full flex absolute bottom-0 justify-center items-center border-t border-t-foreground/10 h-8 text-sm'>
+          <div className='flex-1'>
+            {children}
+          </div>
+          <footer className='w-full flex justify-center items-center border-t border-t-foreground/10 h-8 text-sm'>
             <span className='text-center'>
               Created by{' '}
               <a
