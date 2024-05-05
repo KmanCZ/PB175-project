@@ -43,7 +43,7 @@ export default function DeleteProfile() {
       </CardHeader>
       <CardContent className='flex justify-center'>
         <Dialog>
-          <DialogTrigger>
+          <DialogTrigger asChild>
             <Button variant='destructive'>Delete Profile</Button>
           </DialogTrigger>
           <DialogContent>
