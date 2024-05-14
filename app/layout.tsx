@@ -3,6 +3,8 @@ import { GeistSans } from 'geist/font/sans';
 import './globals.css';
 import Link from 'next/link';
 import { Toaster } from '@/components/ui/sonner';
+import { ThemeProvider } from "@/components/theme-provider"
+import { ModeToggle } from '@/components/ModeTogle';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -22,18 +24,48 @@ export default function RootLayout({
   return (
     <html lang='en' className={GeistSans.className}>
       <body className='bg-background text-foreground'>
-        <main className='h-screen'>
+      <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+      >
+        <main className='min-h-screen flex flex-col'>
           <nav className='w-full flex justify-center border-b border-b-foreground/10 h-16'>
             <div className='w-full max-w-4xl flex justify-between items-center p-3 text-sm'>
               <Link href='/' className='font-bold text-2xl'>
                 TODO APP
               </Link>
-              <AuthButton />
+              <div className='flex items-center gap-3'>
+                <AuthButton />
+                <ModeToggle />
+              </div>
             </div>
           </nav>
-          {children}
+          <div className='flex-1'>
+            {children}
+          </div>
+          <footer className='w-full flex justify-center items-center border-t border-t-foreground/10 h-8 text-sm'>
+            <span className='text-center'>
+              Created by{' '}
+              <a
+                href='https://is.muni.cz/auth/osoba/536526'
+                className='hover:underline'
+              >
+                Kristián Řehoř
+              </a>{' '}
+              &{' '}
+              <a
+                href='https://is.muni.cz/auth/osoba/536473'
+                className='hover:underline'
+              >
+                Lenka Janíková
+              </a>
+            </span>
+          </footer>
         </main>
         <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

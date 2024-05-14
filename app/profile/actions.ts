@@ -46,6 +46,10 @@ export async function changePassword(data: changePasswordType) {
     password: data.password,
   });
 
+  if (error && error.code === 'same_password') {
+    return error.message;
+  }
+
   if (error) {
     return 'Unexpected error';
   }

@@ -39,6 +39,10 @@ export async function resetPassword(token: string, data: resetPasswordType) {
     password: data.password,
   });
 
+  if (error && error.code === 'same_password') {
+    return error.message;
+  }
+
   if (error) {
     return 'Could not reset password';
   }

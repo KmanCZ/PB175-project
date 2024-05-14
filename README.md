@@ -20,7 +20,7 @@ git clone https://github.com/KmanCZ/PB175-project.git
 3. Přesuňte se do projektové složky
 
 ```bash
-cd pb175-todo-app
+cd PB175-project
 ```
 
 4. Nainstalujte závislosti
@@ -48,3 +48,9 @@ a následně spustíte:
 ```bash
 npm run start
 ```
+
+## Nasazení do produkce
+
+Pro nasazení veřejně doporučujeme využít [Vercel](https://vercel.com/) u kterého je nasazení bezproblémové.
+
+Mít aplikaci u ostatních poskytovatelů je sice možné, ale potřebuje mnohem více nastavování.
