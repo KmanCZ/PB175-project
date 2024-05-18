@@ -33,7 +33,7 @@ export async function getTodos(profile: user_profile): Promise<string | todo[]> 
   return result
 }
 
-export async function createTodo(profile: user_profile, name: string, description: string | undefined, deadline: Date | undefined, assignees: {id: string}[]): Promise<string | undefined> {
+export async function createTodo(profile: user_profile, name: string, description: string | undefined, deadline: Date | undefined, assignees: string[]): Promise<string | undefined> {
   try {
     await prisma.$transaction(async () => {
       var todo = await prisma.todo.create({
@@ -50,7 +50,7 @@ export async function createTodo(profile: user_profile, name: string, descriptio
         await prisma.todo_assignee_user.create({
           data: {
             todo_id: todo.id,
-            user_id: assignees[i].id
+            user_id: assignees[i]
           }
         })
       }

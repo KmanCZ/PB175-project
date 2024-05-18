@@ -11,106 +11,14 @@ import { cn } from "@/lib/utils";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { format } from "date-fns";
 
-import { CalendarIcon } from "lucide-react"
+import { CalendarIcon, Check } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { Checkbox } from "@/components/ui/checkbox";   
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { createTodo } from "./actions";
 import { user_profile } from "@prisma/client";
 import { toast } from "sonner";
-
-export const columns: ColumnDef<any>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "name",
-    header: "Name",
-  },
-]
-
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-}
- 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  })
- 
-  return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                )
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
-  )
-}
 
 export default function createTodoForm(profile: user_profile, employees: user_profile[]) {
   const [pending, setPending] = useState(false);
@@ -135,9 +43,8 @@ export default function createTodoForm(profile: user_profile, employees: user_pr
   });
 
   var employeesParsed: {name: string}[] = [];
-  console.log(employees);
   for (var i = 0; i < employees.length; i++) {
-    employeesParsed.push({name: employees[i].first_name + employees[i].last_name})
+    employeesParsed.push({name: employees[i].first_name + " " + employees[i].last_name})
   }
 
   return (
@@ -215,18 +122,53 @@ export default function createTodoForm(profile: user_profile, employees: user_pr
               )}
             />
 
-            <FormField
-              control={form.control}
-              name='assignees'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Assignees</FormLabel>
-                  <FormControl>
-                    <DataTable columns={columns} data={employeesParsed}/>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+           
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[100px]">Select</TableHead>
+                  <TableHead>Name</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {employees.map((employee) => (
+                  <FormField
+                    key={employee.user_id}
+                    control={form.control}
+                    name="assignees"
+                    render={({ field }) => {
+                      return (
+                        <TableRow>
+                          <TableCell>
+                            <FormItem
+                              key={employee.user_id}
+                            >
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value?.includes(employee.user_id)}
+                                  onCheckedChange={(checked) => {
+                                    return checked
+                                      ? field.onChange([...field.value, employee.user_id])
+                                      : field.onChange(
+                                          field.value?.filter(
+                                            (value) => value !== employee.user_id
+                                          )
+                                        )
+                                  }}
+                                />
+                              </FormControl>
+                            </FormItem>
+                          </TableCell>
+                          <TableCell>
+                            {employee.first_name + " " + employee.last_name}
+                          </TableCell>
+                        </TableRow>
+                      )
+                    }}
+                  />
+                ))}
+              </TableBody>
+            </Table>
             <Button type='submit'>Create</Button>
           </form>
         </Form>
