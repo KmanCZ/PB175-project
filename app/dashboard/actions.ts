@@ -4,6 +4,7 @@ import prisma from "@/utils/prisma/client";
 import { todo, todo_assignee_user, user_profile } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { string } from "zod";
+import AcceptTodo from "./acceptTodo";
 
 export async function getTodosEmployee(profile: user_profile): Promise<string | todo[]> {
   var result: todo[] = []
@@ -159,4 +160,24 @@ export async function getMoreInfo(todos: todo[]): Promise<todo_assignee_user[] |
   }
 
   return result
+}
+
+export async function acceptTodo(id: string): Promise<string | void> {
+  console.log(id)
+  try {
+    await prisma.$transaction(async () => {
+      await prisma.todo.update({
+        where: {
+          id: id
+        },
+        data: {
+          accepted: true
+        }
+      })
+    })
+  } catch (e) {
+    return 'Unexpected error'
+  }
+
+  return revalidatePath("/", "layout")
 }

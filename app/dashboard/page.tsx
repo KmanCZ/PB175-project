@@ -58,7 +58,7 @@ export default async function DashboardPage() {
 
   return (
     <div className='text-center'>
-      <h1 className='text-4xl mt-5'>Todos</h1>
+      <h1 className='text-4xl mt-5'>Dashboard</h1>
       <p>
         Welcome, {profile.first_name} {profile.last_name}
       </p>

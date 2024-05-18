@@ -9,6 +9,7 @@ import { todo, todo_assignee_user, user_profile } from "@prisma/client"
 import { FormEvent, useState } from "react"
 import { deleteTodo } from "./actions"
 import { toast } from "sonner"
+import AcceptTodo from "./acceptTodo"
 
 export function DeleteTodo(todo: todo) {
   const onClick = async (e: FormEvent<HTMLFormElement>) => {
@@ -56,9 +57,7 @@ export const columns: ColumnDef<any>[] = [
     accessorKey: "accept",
     header: "Accept",
     cell: ({ row }) => (
-      <Button variant="link" size="icon">
-        <CheckIcon className="h-4 w-4" />
-      </Button>
+      <AcceptTodo data={row.original} />
     )
   },
   {
@@ -157,14 +156,13 @@ interface DataTableProps<TData, TValue> {
 export default function TodosManager({ input }: {data: todo[], profile: user_profile, employees: user_profile[], moreInfo: todo_assignee_user[]}) {
   var data_filtered = []
   for (var i = 0; i < input.data.length; i++) {
-    data_filtered.push({name: input.data[i].name, deadline: (input.data[i].deadline == null ? null : input.data[i].deadline.toLocaleDateString("en-US")), state: input.moreInfo[i].completed == true ? "Waiting for check" : "Pending", id: input.data[i].id})
+    data_filtered.push({name: input.data[i].name, deadline: (input.data[i].deadline == null ? null : input.data[i].deadline.toLocaleDateString("en-US")), state: input.data[i].accepted == true ? "Accepted" : (input.moreInfo[i].completed == true ? "Waiting for check" : "Pending"), id: input.data[i].id})
   }
 
   const [open, setOpen] = useState(false);
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={data_filtered} />
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant="outline">Add todo</Button>
@@ -179,6 +177,7 @@ export default function TodosManager({ input }: {data: todo[], profile: user_pro
           {createTodoForm(input.profile, input.employees, setOpen)}
         </DialogContent>
       </Dialog>
+      <DataTable columns={columns} data={data_filtered} />
     </div>
   )
 }
