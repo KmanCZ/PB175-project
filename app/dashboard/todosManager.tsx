@@ -4,15 +4,27 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import createTodoForm from "./createTodoForm"
+import { CheckIcon, CrossIcon, MoreVerticalIcon } from "lucide-react"
+import { todo } from "@prisma/client"
 
 export const columns: ColumnDef<any>[] = [
   {
     accessorKey: "accept",
     header: "Accept",
+    cell: ({ row }) => (
+      <Button variant="link" size="icon">
+        <CheckIcon className="h-4 w-4" />
+      </Button>
+    )
   },
   {
     accessorKey: "deny",
     header: "Deny",
+    cell: ({ row }) => (
+      <Button variant="link" size="icon">
+        <CrossIcon className="h-4 w-4" />
+      </Button>
+    )
   },
   {
     accessorKey: "name",
@@ -26,6 +38,15 @@ export const columns: ColumnDef<any>[] = [
     accessorKey: "state",
     header: "State",
   },
+  {
+    accessorKey: "info",
+    header: "Info",
+    cell: ({ row }) => (
+      <Button variant="link" size="icon">
+        <MoreVerticalIcon className="h-4 w-4" />
+      </Button>
+    )
+  }
 ]
 
 interface DataTableProps<TData, TValue> {
@@ -91,12 +112,15 @@ interface DataTableProps<TData, TValue> {
     )
   }
 
-export default function TodosManager() {
-  const data: any[] = [];//getTodos();
+export default function TodosManager(data: todo[]) {
+  var data_filtered = []
+  for (var i = 0; i < data.length; i++) {
+    data_filtered.push({name: data[i].name, deadline: data[i].deadline, state: data[i].accepted})
+  }
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={data_filtered} />
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="outline">Add todo</Button>

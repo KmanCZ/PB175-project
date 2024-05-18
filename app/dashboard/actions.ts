@@ -1,7 +1,7 @@
 'use server';
 
 import prisma from "@/utils/prisma/client";
-import { todo, todo_assignee_user, user_profile } from "@prisma/client";
+import { todo, user_profile } from "@prisma/client";
 
 export async function getTodos(profile: user_profile): Promise<string | todo[]> {
   var result: todo[] = []

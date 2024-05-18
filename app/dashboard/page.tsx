@@ -3,6 +3,9 @@ import { redirect } from 'next/navigation';
 import { getUser } from '@/utils/prisma/getUser';
 import TodosManager from './todosManager';
 import TodosEmployee from './todosEmployee';
+import { getTodos } from './actions';
+import { toast } from 'sonner';
+import { role, todo } from '@prisma/client';
 
 export default async function DashboardPage() {
   const supabase = createClient();
@@ -21,7 +24,13 @@ export default async function DashboardPage() {
     return redirect('/createProfile');
   }
 
-  const todos = profile.user_role === 'manager' ? <TodosManager profile={profile}/> : <TodosEmployee profile={profile}/>
+  var todos_data: todo[] | string = await getTodos(profile);
+
+  if (typeof todos_data == "string") {
+    return toast(todos_data);
+  }
+
+  const todos = profile.user_role === 'manager' ? <TodosManager data={todos_data}/> : <TodosEmployee data={todos_data}/>
 
   return (
     <div className='text-center'>

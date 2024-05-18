@@ -1,11 +1,9 @@
 'use client'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
-import { getTodos } from "./actions"
-import { todo, user_profile } from "@prisma/client"
-import { toast } from "sonner"
 import { CheckIcon, MoreVertical } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { todo } from "@prisma/client"
 
 export const columns: ColumnDef<any>[] = [
   {
@@ -99,21 +97,15 @@ interface DataTableProps<TData, TValue> {
     )
   }
 
-export default async function TodosEmployee(profile: user_profile) {
-  /**var todos: todo[] | string = await getTodos(profile);
-  var data = [];
-
-  if (typeof todos == "string") {
-    return toast(todos);
+export default function TodosEmployee(data: todo[]) {
+  var data_filtered = [];
+  for (var i = 0; i < data.length; i++) {
+    data_filtered.push({name: data[i].name, deadline: data[i].deadline})
   }
-
-  for (var i = 0; i < todos.length; i++) {
-    data.push({name: todos[i].name, deadline: todos[i].deadline})
-  }**/
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={[{name: "tester", deadline: undefined}]} />
+      <DataTable columns={columns} data={data_filtered} />
     </div>
   )
 }
