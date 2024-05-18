@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { getUser } from '@/utils/prisma/getUser';
 import TodosManager from './todosManager';
+import TodosEmployee from './todosEmployee';
 
 export default async function DashboardPage() {
   const supabase = createClient();
@@ -20,6 +21,8 @@ export default async function DashboardPage() {
     return redirect('/createProfile');
   }
 
+  const todos = profile.user_role === 'manager' ? <TodosManager profile={profile}/> : <TodosEmployee profile={profile}/>
+
   return (
     <div className='text-center'>
       <h1 className='text-4xl mt-5'>Todos</h1>
@@ -27,7 +30,7 @@ export default async function DashboardPage() {
         Welcome, {profile.first_name} {profile.last_name}
       </p>
       <p>Here you can see your todos.</p>
-      <TodosManager/>
+      {todos}
     </div>
   );
 }
