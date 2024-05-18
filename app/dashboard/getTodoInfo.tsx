@@ -21,9 +21,9 @@ export default function GetTodoInfo({todo: data}: {todo: todo}) {
           </CardHeader>
           <CardContent className='flex flex-col gap-3'>
             <h1>Description</h1>
-            {data.description == null ? <p>none</p> : <p>{data.description}</p>}
+            {data.description === null ? <p>none</p> : <p>{data.description}</p>}
             <h1>Deadline</h1>
-            {data.deadline == null ? <p>none</p> : <Date>{data.deadline}</Date>}
+            {data.deadline === null ? <p>none</p> : <Date>{data.deadline}</Date>}
           </CardContent>
         </div>
       </DialogContent>

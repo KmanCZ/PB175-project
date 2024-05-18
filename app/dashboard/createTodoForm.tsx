@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { createTodoType, createTodoSchema } from "./schemas"
-import { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from '@/components/ui/input';
@@ -14,7 +14,7 @@ import { format } from "date-fns";
 import { CalendarIcon, Check } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
 import { Checkbox } from "@/components/ui/checkbox";   
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { createTodo } from "./actions";
 import { user_profile } from "@prisma/client";
 import { toast } from "sonner";
@@ -40,13 +40,8 @@ export default function createTodoForm(profile: user_profile, employees: user_pr
       return toast(error);
     }
     setOpen(false);
-    return toast("Successfully created");
+    form.reset()
   });
-
-  var employeesParsed: {name: string}[] = [];
-  for (var i = 0; i < employees.length; i++) {
-    employeesParsed.push({name: employees[i].first_name + " " + employees[i].last_name})
-  }
 
   return (
     <Card className='w-96 mx-auto mt-4'>

@@ -4,12 +4,14 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import createTodoForm from "./createTodoForm"
-import { CheckIcon, XIcon } from "lucide-react"
+import { XIcon } from "lucide-react"
 import { todo, todo_assignee_user, user_profile } from "@prisma/client"
 import { FormEvent, useState } from "react"
 import { deleteTodo } from "./actions"
 import { toast } from "sonner"
 import AcceptTodo from "./acceptTodo"
+import DenyTodo from "./denyTodo"
+import EditTodo from "./editTodo"
 
 export function DeleteTodo(todo: todo) {
   const onClick = async (e: FormEvent<HTMLFormElement>) => {
@@ -64,9 +66,7 @@ export const columns: ColumnDef<any>[] = [
     accessorKey: "deny",
     header: "Deny",
     cell: ({ row }) => (
-      <Button variant="link" size="icon">
-        <XIcon className="h-4 w-4" />
-      </Button>
+      <DenyTodo data={row.original} />
     )
   },
   {
@@ -80,6 +80,13 @@ export const columns: ColumnDef<any>[] = [
   {
     accessorKey: "state",
     header: "State",
+  },
+  {
+    accessorKey: "edit",
+    header: "Edit",
+    cell: ({ row }) => (
+      <EditTodo todo={row.original} />
+    )
   },
   {
     accessorKey: "delete",
@@ -156,7 +163,13 @@ interface DataTableProps<TData, TValue> {
 export default function TodosManager({ input }: {data: todo[], profile: user_profile, employees: user_profile[], moreInfo: todo_assignee_user[]}) {
   var data_filtered = []
   for (var i = 0; i < input.data.length; i++) {
-    data_filtered.push({name: input.data[i].name, deadline: (input.data[i].deadline == null ? null : input.data[i].deadline.toLocaleDateString("en-US")), state: input.data[i].accepted == true ? "Accepted" : (input.moreInfo[i].completed == true ? "Waiting for check" : "Pending"), id: input.data[i].id})
+    var employees: string[] = [];
+    for (var j = 0; j < input.moreInfo.length; j++) {
+      if (input.moreInfo[j].todo_id == input.data[i].id) {
+        employees.push(input.employees.filter((employee: user_profile) => employee.user_id === input.moreInfo[j].user_id))
+      }
+    }
+    data_filtered.push({name: input.data[i].name, description: input.data[i].destription, deadline: (input.data[i].deadline === null ? null : input.data[i].deadline.toLocaleDateString("en-US")), state: input.data[i].accepted === true ? "Accepted" : (input.moreInfo[i].completed === true ? "Waiting for check" : "Pending"), id: input.data[i].id, assignees: employees, employees: input.employees})
   }
 
   const [open, setOpen] = useState(false);

@@ -28,20 +28,20 @@ export default async function DashboardPage() {
 
   var todos
 
-  if (profile.user_role == "manager") {
+  if (profile.user_role === "manager") {
     const employees = await getEmployees(profile.organization);
-    if (typeof employees == "string") {
+    if (typeof employees === "string") {
       return toast(employees)
     }
 
     todos_data = await getTodosManager(profile);
-    if (typeof todos_data == "string") {
+    if (typeof todos_data === "string") {
       return toast(todos_data)
     }
 
     const connectingTables = await getMoreInfo(todos_data)
     console.log(connectingTables)
-    if (typeof connectingTables == "string") {
+    if (typeof connectingTables === "string") {
       return toast(connectingTables)
     }
 
@@ -49,7 +49,7 @@ export default async function DashboardPage() {
   } else {
     todos_data = await getTodosEmployee(profile);
 
-    if (typeof todos_data == "string") {
+    if (typeof todos_data === "string") {
       return toast(todos_data);
     }
 

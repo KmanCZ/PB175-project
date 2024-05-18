@@ -3,8 +3,6 @@
 import prisma from "@/utils/prisma/client";
 import { todo, todo_assignee_user, user_profile } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import { string } from "zod";
-import AcceptTodo from "./acceptTodo";
 
 export async function getTodosEmployee(profile: user_profile): Promise<string | todo[]> {
   var result: todo[] = []
@@ -27,7 +25,15 @@ export async function getTodosEmployee(profile: user_profile): Promise<string | 
           id: {
             in: connecting_ids
           }
-        }
+        },
+        orderBy: [
+          {
+            name: "asc"
+          },
+          {
+            id: "asc"
+          }
+        ]
       })
     })
   } catch (e) {
@@ -43,7 +49,15 @@ export async function getTodosManager(profile: user_profile): Promise<string | t
     result = await prisma.todo.findMany({
       where: {
         created_by: profile.user_id
-      }
+      },
+      orderBy: [
+        {
+          name: "asc"
+        },
+        {
+          id: "asc"
+        }
+      ]
     })
 
   } catch (e) {
@@ -79,7 +93,7 @@ export async function createTodo(profile: user_profile, name: string, descriptio
     return 'Unexpected error'
   }
 
-  revalidatePath("/", "layout")
+  revalidatePath("/dashboard", "page")
   return undefined;
 }
 
@@ -114,7 +128,7 @@ export async function deleteTodo(id: string): Promise<string | void> {
     return 'Unexpected error'
   }
 
-  return revalidatePath("/", "layout")
+  return revalidatePath("/dashboard", "page")
 }
 
 export async function markTodoAsCompleted(todo_id: string, user_id: string): Promise<string | void> {
@@ -136,7 +150,7 @@ export async function markTodoAsCompleted(todo_id: string, user_id: string): Pro
     return 'Unexpected error'
   }
 
-  return revalidatePath("/", "layout")
+  return revalidatePath("/dashboard", "page")
 }
 
 export async function getMoreInfo(todos: todo[]): Promise<todo_assignee_user[] | string> {
@@ -163,7 +177,6 @@ export async function getMoreInfo(todos: todo[]): Promise<todo_assignee_user[] |
 }
 
 export async function acceptTodo(id: string): Promise<string | void> {
-  console.log(id)
   try {
     await prisma.$transaction(async () => {
       await prisma.todo.update({
@@ -179,5 +192,56 @@ export async function acceptTodo(id: string): Promise<string | void> {
     return 'Unexpected error'
   }
 
-  return revalidatePath("/", "layout")
+  return revalidatePath("/dashboard", "page")
+}
+
+export async function denyTodo(id: string): Promise<string | void> {
+  try {
+    await prisma.$transaction(async () =>{
+      await prisma.todo_assignee_user.updateMany({
+        where: {
+          todo_id: id
+        },
+        data: {
+          completed: false
+        }
+      })
+    })
+  } catch (e) {
+    return 'Unexpected error'
+  }
+
+  return revalidatePath("/dashboard", "page")
+}
+
+export async function updateTodo(todo_id: string, name: string, description: string | undefined, deadline: Date | undefined, assignees: user_profile[]): Promise<void | string> {
+  try {
+    await prisma.$transaction(async () => {
+      await prisma.todo.update({
+        where: {
+          id: todo_id,
+        },
+        data: {
+          name: name,
+          description: description,
+          deadline: deadline,
+          assignees: undefined
+        }
+      })
+
+      var data: {todo_id: string, user_id: string}[] = []
+      for (var i = 0; i < assignees.length; i++) {
+        data.push({todo_id: todo_id, user_id: assignees[i].user_id})
+      }
+
+      await prisma.todo_assignee_user.createMany({
+        data: data,
+        skipDuplicates: true
+      })
+    })
+  } catch (e) {
+    return 'Unexpected error'
+  }
+
+  return revalidatePath("/dashboard", "page")
 }
