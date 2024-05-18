@@ -3,17 +3,16 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { CheckIcon, MoreVertical } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { todo } from "@prisma/client"
+import { todo, user_profile } from "@prisma/client"
 import GetTodoInfo from "./getTodoInfo"
+import MarkAsCompleted from "./markAsCompleted"
 
 export const columns: ColumnDef<any>[] = [
   {
     accessorKey: "done",
     header: "Done",
     cell: ({ row }) => (
-      <Button variant="link" size="icon">
-        <CheckIcon className="h-4 w-4" />
-      </Button>
+      <MarkAsCompleted data={{todo: row.original}}/>
     ),
   },
   {
@@ -96,10 +95,10 @@ interface DataTableProps<TData, TValue> {
     )
   }
 
-export default function TodosEmployee({ data }: {todos: todo[]}) {
+export default function TodosEmployee({ data }: { todos: todo[], profile: user_profile }) {
   var data_filtered = [];
   for (var i = 0; i < data.todos.length; i++) {
-    data_filtered.push({name: data.todos[i].name, date: data.todos[i].deadline})
+    data_filtered.push({name: data.todos[i].name, deadline: (data.todos[i].deadline == null ? null : data.todos[i].deadline.toLocaleDateString("en-US")), todo_id: data.todos[i].id, profile: data.profile})
   }
 
   return (

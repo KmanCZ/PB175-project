@@ -1,8 +1,9 @@
 'use server';
 
 import prisma from "@/utils/prisma/client";
-import { todo, user_profile } from "@prisma/client";
+import { todo, todo_assignee_user, user_profile } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { string } from "zod";
 
 export async function getTodosEmployee(profile: user_profile): Promise<string | todo[]> {
   var result: todo[] = []
@@ -10,7 +11,8 @@ export async function getTodosEmployee(profile: user_profile): Promise<string | 
     await prisma.$transaction(async () => {
       var connecting = await prisma.todo_assignee_user.findMany({
         where: {
-          user_id: profile.user_id
+          user_id: profile.user_id,
+          completed: false
         }
       })
 
@@ -112,4 +114,49 @@ export async function deleteTodo(id: string): Promise<string | void> {
   }
 
   return revalidatePath("/", "layout")
+}
+
+export async function markTodoAsCompleted(todo_id: string, user_id: string): Promise<string | void> {
+  try {
+    await prisma.$transaction(async () => {
+      await prisma.todo_assignee_user.update({
+        where: {
+          todo_id_user_id: {
+            todo_id: todo_id,
+            user_id: user_id
+          }
+        },
+        data: {
+          completed: true
+        }
+      })
+    })
+  } catch (e) {
+    return 'Unexpected error'
+  }
+
+  return revalidatePath("/", "layout")
+}
+
+export async function getMoreInfo(todos: todo[]): Promise<todo_assignee_user[] | string> {
+  var todos_id: string[] = []
+  for (var i = 0; i < todos.length; i++) {
+    todos_id.push(todos[i].id)
+  }
+  var result: todo_assignee_user[] = []
+  try {
+    await prisma.$transaction(async () => {
+      result = await prisma.todo_assignee_user.findMany({
+        where: {
+          todo_id: {
+            in: todos_id
+          }
+        }
+      })
+    })
+  } catch (e) {
+    return 'Unexpected error'
+  }
+
+  return result
 }
