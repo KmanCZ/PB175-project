@@ -19,7 +19,7 @@ model user_profile {
 }
 
 model todo {
-  id              String               @id @db.Uuid
+  id              String               @id @db.Uuid @default(uuid())
   name            String
   description     String?
   deadline        DateTime?
