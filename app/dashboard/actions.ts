@@ -2,8 +2,9 @@
 
 import prisma from "@/utils/prisma/client";
 import { todo, user_profile } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
-export async function getTodos(profile: user_profile): Promise<string | todo[]> {
+export async function getTodosEmployee(profile: user_profile): Promise<string | todo[]> {
   var result: todo[] = []
   try {
     await prisma.$transaction(async () => {
@@ -28,6 +29,22 @@ export async function getTodos(profile: user_profile): Promise<string | todo[]> 
     })
   } catch (e) {
     return 'Unexpected error';
+  }
+
+  return result
+}
+
+export async function getTodosManager(profile: user_profile): Promise<string | todo[]> {
+  var result: todo[] = []
+  try {
+    result = await prisma.todo.findMany({
+      where: {
+        created_by: profile.user_id
+      }
+    })
+
+  } catch (e) {
+    return 'Unexpected error'
   }
 
   return result
@@ -59,6 +76,7 @@ export async function createTodo(profile: user_profile, name: string, descriptio
     return 'Unexpected error'
   }
 
+  revalidatePath("/", "layout")
   return undefined;
 }
 

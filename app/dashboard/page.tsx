@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import { getUser } from '@/utils/prisma/getUser';
 import TodosManager from './todosManager';
 import TodosEmployee from './todosEmployee';
-import { getEmployees, getTodos } from './actions';
+import { getEmployees, getTodosEmployee, getTodosManager } from './actions';
 import { toast } from 'sonner';
 import { todo } from '@prisma/client';
 
@@ -24,11 +24,7 @@ export default async function DashboardPage() {
     return redirect('/createProfile');
   }
 
-  var todos_data: todo[] | string = await getTodos(profile);
-
-  if (typeof todos_data == "string") {
-    return toast(todos_data);
-  }
+  var todos_data: todo[] | string
 
   var todos
 
@@ -38,8 +34,16 @@ export default async function DashboardPage() {
       return toast(employees)
     }
 
+    todos_data = await getTodosManager(profile);
+
     todos = <TodosManager input={{data: todos_data, profile: profile, employees: employees}}/>
   } else {
+    todos_data = await getTodosEmployee(profile);
+
+    if (typeof todos_data == "string") {
+      return toast(todos_data);
+    }
+
     todos = <TodosEmployee data={{todos: todos_data}}/>
   }
 

@@ -4,9 +4,9 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import createTodoForm from "./createTodoForm"
-import { CheckIcon, CrossIcon, MoreVerticalIcon } from "lucide-react"
+import { CheckIcon, XIcon } from "lucide-react"
 import { todo, user_profile } from "@prisma/client"
-import { FormEvent } from "react"
+import { FormEvent, useState } from "react"
 import { deleteTodo } from "./actions"
 import { toast } from "sonner"
 
@@ -21,7 +21,7 @@ export function DeleteTodo(id: string) {
   return (
     <form onClick={onClick}>
       <Button variant="link" size="icon">
-        <MoreVerticalIcon className="h-4 w-4" />
+        <XIcon className="h-4 w-4" color="red" />
       </Button>
     </form>
   )
@@ -42,7 +42,7 @@ export const columns: ColumnDef<any>[] = [
     header: "Deny",
     cell: ({ row }) => (
       <Button variant="link" size="icon">
-        <CrossIcon className="h-4 w-4" />
+        <XIcon className="h-4 w-4" />
       </Button>
     )
   },
@@ -137,13 +137,15 @@ interface DataTableProps<TData, TValue> {
 export default function TodosManager({ input }: {data: todo[], profile: user_profile, employees: user_profile[]}) {
   var data_filtered = []
   for (var i = 0; i < input.data.length; i++) {
-    data_filtered.push({name: input.data[i].name, deadline: input.data[i].deadline, state: input.data[i].accepted})
+    data_filtered.push({name: input.data[i].name, deadline: (input.data[i].deadline == null ? null : input.data[i].deadline.toLocaleDateString("en-US")), state: input.data[i].accepted == true ? "Waiting for check" : "Pending"})
   }
+
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="container mx-auto py-10">
       <DataTable columns={columns} data={data_filtered} />
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant="outline">Add todo</Button>
         </DialogTrigger>
@@ -154,7 +156,7 @@ export default function TodosManager({ input }: {data: todo[], profile: user_pro
               Fill in the needed information to create a new todo.
             </DialogDescription>
           </DialogHeader>
-          {createTodoForm(input.profile, input.employees)}
+          {createTodoForm(input.profile, input.employees, setOpen)}
         </DialogContent>
       </Dialog>
     </div>
