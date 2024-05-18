@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import createTodoForm from "./createTodoForm"
 import { CheckIcon, CrossIcon, MoreVerticalIcon } from "lucide-react"
-import { todo } from "@prisma/client"
+import { todo, user_profile } from "@prisma/client"
 
 export const columns: ColumnDef<any>[] = [
   {
@@ -112,10 +112,10 @@ interface DataTableProps<TData, TValue> {
     )
   }
 
-export default function TodosManager(data: todo[]) {
+export default function TodosManager({ input }: {data: todo[], profile: user_profile, employees: user_profile[]}) {
   var data_filtered = []
-  for (var i = 0; i < data.length; i++) {
-    data_filtered.push({name: data[i].name, deadline: data[i].deadline, state: data[i].accepted})
+  for (var i = 0; i < input.data.length; i++) {
+    data_filtered.push({name: input.data[i].name, deadline: input.data[i].deadline, state: input.data[i].accepted})
   }
 
   return (
@@ -132,7 +132,7 @@ export default function TodosManager(data: todo[]) {
               Fill in the needed information to create a new todo.
             </DialogDescription>
           </DialogHeader>
-          {createTodoForm()}
+          {createTodoForm(input.profile, input.employees)}
         </DialogContent>
       </Dialog>
     </div>

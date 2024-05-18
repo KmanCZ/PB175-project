@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { createTodoType, createTodoSchema } from "./schemas"
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from '@/components/ui/input';
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -16,6 +16,9 @@ import { Calendar } from "@/components/ui/calendar"
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { Checkbox } from "@/components/ui/checkbox";   
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { createTodo } from "./actions";
+import { user_profile } from "@prisma/client";
+import { toast } from "sonner";
 
 export const columns: ColumnDef<any>[] = [
   {
@@ -109,7 +112,7 @@ export function DataTable<TData, TValue>({
   )
 }
 
-export default function createTodoForm() {
+export default function createTodoForm(profile: user_profile, employees: user_profile[]) {
   const [pending, setPending] = useState(false);
   const form = useForm<createTodoType>({
     resolver: zodResolver(createTodoSchema),
@@ -123,14 +126,18 @@ export default function createTodoForm() {
    
   const onSubmit = form.handleSubmit(async (data) => {
     setPending(true);
-    //const error = await createTodo();
+    const error = await createTodo(profile, data.name, data.description, data.deadline, data.assignees);
     setPending(false);
-    //if (error) {
-        //return toast(error);
-    //}
+    if (error) {
+        return toast(error);
+    }
   });
 
-  const data: any[] = []
+  var employeesParsed: {name: string}[] = [];
+  console.log(employees);
+  for (var i = 0; i < employees.length; i++) {
+    employeesParsed.push({name: employees[i].first_name + employees[i].last_name})
+  }
 
   return (
     <Card className='w-96 mx-auto mt-4'>
@@ -213,7 +220,7 @@ export default function createTodoForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Assignees</FormLabel>
-                  <DataTable columns={columns} data={data}/>
+                  <DataTable columns={columns} data={employeesParsed}/>
                 </FormItem>
               )}
             />
