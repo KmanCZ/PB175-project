@@ -6,6 +6,26 @@ import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack
 import createTodoForm from "./createTodoForm"
 import { CheckIcon, CrossIcon, MoreVerticalIcon } from "lucide-react"
 import { todo, user_profile } from "@prisma/client"
+import { FormEvent } from "react"
+import { deleteTodo } from "./actions"
+import { toast } from "sonner"
+
+export function DeleteTodo(id: string) {
+  const onClick = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const error = await deleteTodo(id);
+    if (error) {
+      return toast(error);
+    }
+  };
+  return (
+    <form onClick={onClick}>
+      <Button variant="link" size="icon">
+        <MoreVerticalIcon className="h-4 w-4" />
+      </Button>
+    </form>
+  )
+}
 
 export const columns: ColumnDef<any>[] = [
   {
@@ -40,11 +60,13 @@ export const columns: ColumnDef<any>[] = [
   },
   {
     accessorKey: "info",
-    header: "Info",
+    header: "Info"
+  },
+  {
+    accessorKey: "delete",
+    header: "Delete",
     cell: ({ row }) => (
-      <Button variant="link" size="icon">
-        <MoreVerticalIcon className="h-4 w-4" />
-      </Button>
+      DeleteTodo(row.id)
     )
   }
 ]

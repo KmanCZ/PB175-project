@@ -79,3 +79,19 @@ export async function getEmployees(organization: string): Promise<string | user_
 
   return result
 }
+
+export async function deleteTodo(id: string): Promise<string | undefined> {
+  try {
+    await prisma.$transaction(async () => {
+      await prisma.todo.delete({
+        where: {
+          id: id
+        }
+      })
+    })
+  } catch (e) {
+    return 'Unexpected error'
+  }
+
+  return undefined
+}

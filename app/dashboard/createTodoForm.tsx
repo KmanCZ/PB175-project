@@ -125,11 +125,12 @@ export default function createTodoForm(profile: user_profile, employees: user_pr
   })
    
   const onSubmit = form.handleSubmit(async (data) => {
+    if (pending) return;
     setPending(true);
     const error = await createTodo(profile, data.name, data.description, data.deadline, data.assignees);
     setPending(false);
     if (error) {
-        return toast(error);
+      return toast(error);
     }
   });
 
@@ -220,7 +221,9 @@ export default function createTodoForm(profile: user_profile, employees: user_pr
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Assignees</FormLabel>
-                  <DataTable columns={columns} data={employeesParsed}/>
+                  <FormControl>
+                    <DataTable columns={columns} data={employeesParsed}/>
+                  </FormControl>
                 </FormItem>
               )}
             />
