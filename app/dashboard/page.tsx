@@ -40,7 +40,7 @@ export default async function DashboardPage() {
 
     todos = <TodosManager input={{data: todos_data, profile: profile, employees: employees}}/>
   } else {
-    todos = <TodosEmployee data={todos_data}/>
+    todos = <TodosEmployee data={{todos: todos_data}}/>
   }
 
   return (

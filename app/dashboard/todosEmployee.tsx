@@ -4,6 +4,7 @@ import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack
 import { CheckIcon, MoreVertical } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { todo } from "@prisma/client"
+import getTodoInfo from "./getTodoInfo"
 
 export const columns: ColumnDef<any>[] = [
   {
@@ -27,9 +28,7 @@ export const columns: ColumnDef<any>[] = [
     accessorKey: "info",
     header: "Info",
     cell: ({ row }) => (
-      <Button variant="link" size="icon">
-        <MoreVertical className="h-4w-4" />
-      </Button>
+      getTodoInfo(row.original)
     )
   }
 ]
@@ -97,11 +96,15 @@ interface DataTableProps<TData, TValue> {
     )
   }
 
-export default function TodosEmployee(data: todo[]) {
+export default function TodosEmployee({ data }: {todos: todo[]}) {
+  console.log(data)
   var data_filtered = [];
-  for (var i = 0; i < data.length; i++) {
-    data_filtered.push({name: data[i].name, deadline: data[i].deadline})
+  for (var i = 0; i < data.todos.length; i++) {
+    console.log(data.todos[i])
+    data_filtered.push({name: data.todos[i].name, date: data.todos[i].date})
   }
+
+  console.log(data_filtered)
 
   return (
     <div className="container mx-auto py-10">

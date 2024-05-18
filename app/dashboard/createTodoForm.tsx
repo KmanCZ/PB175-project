@@ -13,7 +13,6 @@ import { format } from "date-fns";
 
 import { CalendarIcon, Check } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { Checkbox } from "@/components/ui/checkbox";   
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { createTodo } from "./actions";
@@ -28,7 +27,7 @@ export default function createTodoForm(profile: user_profile, employees: user_pr
       name: "New todo",
       description: "",
       deadline: undefined,
-      assignees: undefined,
+      assignees: [],
     },
   })
    
@@ -125,6 +124,9 @@ export default function createTodoForm(profile: user_profile, employees: user_pr
            
             <Table>
               <TableHeader>
+                <FormLabel>
+                  Assignees
+                </FormLabel>
                 <TableRow>
                   <TableHead className="w-[100px]">Select</TableHead>
                   <TableHead>Name</TableHead>
