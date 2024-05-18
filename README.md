@@ -7,7 +7,7 @@
 - operační systém MacOS, Windows, nebo Linux
 - 8GB RAM
 
-## Instalace
+## Instalace a zpuštění
 
 1. Založte si supabase projekt např. [zde](https://database.new) nebo lokálně.
 
@@ -29,15 +29,21 @@ cd PB175-project
 npm i
 ```
 
-5. Přejmenujte `.env.example` na `.env.local` a doplňte hodnoty, které naleznete u svého supabase projektu.
+5. Přejmenujte `.env.example` na `.env.local` (NEXT_PUBLIC_SUPABASE_URL a NEXT_PUBLIC_SUPABASE_ANON_KEY) a `.env` (DATABASE_URL a DIRECT_URL) a doplňte hodnoty, které naleznete u svého supabase projektu.
 
-6. Lokální server spustíte:
+6. Aplikujte databázové migrace
+
+```bash
+npx prisma migrate deploy
+```
+
+7. Lokální server spustíte:
 
 ```bash
 npm run dev
 ```
 
-7. Optimalizovanou verzi aplikace sestavíte:
+8. Optimalizovanou verzi aplikace sestavíte:
 
 ```bash
 npm run build
