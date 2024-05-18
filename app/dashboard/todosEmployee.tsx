@@ -4,7 +4,7 @@ import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack
 import { CheckIcon, MoreVertical } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { todo } from "@prisma/client"
-import getTodoInfo from "./getTodoInfo"
+import GetTodoInfo from "./getTodoInfo"
 
 export const columns: ColumnDef<any>[] = [
   {
@@ -28,7 +28,7 @@ export const columns: ColumnDef<any>[] = [
     accessorKey: "info",
     header: "Info",
     cell: ({ row }) => (
-      getTodoInfo(row.original)
+      <GetTodoInfo todo={row.original} />
     )
   }
 ]
@@ -37,7 +37,7 @@ interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
   }
-   
+
   export function DataTable<TData, TValue>({
     columns,
     data,
@@ -47,7 +47,7 @@ interface DataTableProps<TData, TValue> {
       columns,
       getCoreRowModel: getCoreRowModel(),
     })
-   
+
     return (
       <div className="rounded-md border">
         <Table>
@@ -101,7 +101,7 @@ export default function TodosEmployee({ data }: {todos: todo[]}) {
   var data_filtered = [];
   for (var i = 0; i < data.todos.length; i++) {
     console.log(data.todos[i])
-    data_filtered.push({name: data.todos[i].name, date: data.todos[i].date})
+    data_filtered.push({name: data.todos[i].name, date: data.todos[i].deadline})
   }
 
   console.log(data_filtered)
@@ -112,4 +112,3 @@ export default function TodosEmployee({ data }: {todos: todo[]}) {
     </div>
   )
 }
-  

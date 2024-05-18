@@ -1,13 +1,12 @@
 'use client'
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { DialogHeader } from "@/components/ui/dialog"
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog"
 import { todo } from "@prisma/client"
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@radix-ui/react-dialog"
 import { MoreVerticalIcon } from "lucide-react"
 
-export default function getTodoInfo(data: todo) {
+export default function GetTodoInfo({todo: data}: {todo: todo}) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -16,7 +15,7 @@ export default function getTodoInfo(data: todo) {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <Card className='flex flex-col w-96 mx-auto mt-4'>
+        <div className='flex flex-col w-96 mx-auto mt-4'>
           <CardHeader>
             <CardTitle>{data.name}</CardTitle>
           </CardHeader>
@@ -24,9 +23,9 @@ export default function getTodoInfo(data: todo) {
             <p>Description:</p>
             {data.description == null ? <p>none</p> : <p>{data.description}</p>}
             <p>Deadline</p>
-            {data.deadline == null ? "none" : <Date>{data.deadline}</Date>}  
+            {data.deadline == null ? "none" : <Date>{data.deadline}</Date>}
           </CardContent>
-        </Card>
+        </div>
       </DialogContent>
     </Dialog>
   )
