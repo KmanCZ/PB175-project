@@ -98,7 +98,7 @@ export async function getEmployees(organization: string): Promise<string | user_
   return result
 }
 
-export async function deleteTodo(id: string): Promise<string | undefined> {
+export async function deleteTodo(id: string): Promise<string | void> {
   try {
     await prisma.$transaction(async () => {
       await prisma.todo.delete({
@@ -111,5 +111,5 @@ export async function deleteTodo(id: string): Promise<string | undefined> {
     return 'Unexpected error'
   }
 
-  return undefined
+  return revalidatePath("/", "layout")
 }

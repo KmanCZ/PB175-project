@@ -1,6 +1,6 @@
 'use client'
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import createTodoForm from "./createTodoForm"
@@ -10,19 +10,46 @@ import { FormEvent, useState } from "react"
 import { deleteTodo } from "./actions"
 import { toast } from "sonner"
 
-export function DeleteTodo(id: string) {
+export function DeleteTodo(todo: todo) {
   const onClick = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const error = await deleteTodo(id);
+    console.log(todo)
+    const error = await deleteTodo(todo.id);
     if (error) {
       return toast(error);
     }
   };
+
   return (
-    <form onClick={onClick}>
-      <Button variant="link" size="icon">
-        <XIcon className="h-4 w-4" color="red" />
-      </Button>
+    <form>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="link" size="icon">
+            <XIcon className="h-4 w-4" color="red" />
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete todo</DialogTitle>
+            <DialogClose />
+          </DialogHeader>
+          <DialogDescription>
+            Are you sure you want to delete this todo?
+          </DialogDescription>
+          <DialogFooter>
+            <form onClick={onClick}>
+            <DialogClose asChild className='mr-3'>
+              <Button type='button' variant='secondary'>
+                Close
+              </Button>
+            </DialogClose>
+            <Button variant='destructive' type='submit'>
+              Delete todo
+            </Button>
+            </form>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </form>
   )
 }
@@ -59,14 +86,10 @@ export const columns: ColumnDef<any>[] = [
     header: "State",
   },
   {
-    accessorKey: "info",
-    header: "Info"
-  },
-  {
     accessorKey: "delete",
     header: "Delete",
     cell: ({ row }) => (
-      DeleteTodo(row.id)
+      DeleteTodo(row.original)
     )
   }
 ]
@@ -137,7 +160,7 @@ interface DataTableProps<TData, TValue> {
 export default function TodosManager({ input }: {data: todo[], profile: user_profile, employees: user_profile[]}) {
   var data_filtered = []
   for (var i = 0; i < input.data.length; i++) {
-    data_filtered.push({name: input.data[i].name, deadline: (input.data[i].deadline == null ? null : input.data[i].deadline.toLocaleDateString("en-US")), state: input.data[i].accepted == true ? "Waiting for check" : "Pending"})
+    data_filtered.push({name: input.data[i].name, deadline: (input.data[i].deadline == null ? null : input.data[i].deadline.toLocaleDateString("en-US")), state: input.data[i].accepted == true ? "Waiting for check" : "Pending", id: input.data[i].id})
   }
 
   const [open, setOpen] = useState(false);

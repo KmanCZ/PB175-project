@@ -97,14 +97,10 @@ interface DataTableProps<TData, TValue> {
   }
 
 export default function TodosEmployee({ data }: {todos: todo[]}) {
-  console.log(data)
   var data_filtered = [];
   for (var i = 0; i < data.todos.length; i++) {
-    console.log(data.todos[i])
     data_filtered.push({name: data.todos[i].name, date: data.todos[i].deadline})
   }
-
-  console.log(data_filtered)
 
   return (
     <div className="container mx-auto py-10">
