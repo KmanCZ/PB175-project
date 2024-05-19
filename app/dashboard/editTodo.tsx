@@ -51,7 +51,7 @@ export default function EditTodo({todo}: {todo: {name: string, description: stri
       setOpen(false);
       form.reset()
     });
-  
+
     return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -132,8 +132,8 @@ export default function EditTodo({todo}: {todo: {name: string, description: stri
                   </FormItem>
                 )}
               />
-  
-              
+
+              <p className="text-destructive">{form.formState.errors.assignees?.message}</p>
               <Table>
                 <TableHeader>
                   <FormLabel>

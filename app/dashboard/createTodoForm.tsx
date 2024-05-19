@@ -13,7 +13,7 @@ import { format } from "date-fns";
 
 import { CalendarIcon, Check } from "lucide-react"
 import { Calendar } from "@/components/ui/calendar"
-import { Checkbox } from "@/components/ui/checkbox";   
+import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { createTodo } from "./actions";
 import { user_profile } from "@prisma/client";
@@ -30,7 +30,7 @@ export default function CreateTodoForm(profile: user_profile, employees: user_pr
       assignees: [],
     },
   })
-   
+
   const onSubmit = form.handleSubmit(async (data) => {
     if (pending) return;
     setPending(true);
@@ -118,7 +118,7 @@ export default function CreateTodoForm(profile: user_profile, employees: user_pr
               )}
             />
 
-           
+            <p className="text-destructive">{form.formState.errors.assignees?.message}</p>
             <Table>
               <TableHeader>
                 <FormLabel>
