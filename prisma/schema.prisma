@@ -19,13 +19,13 @@ model user_profile {
 }
 
 model todo {
-  id              String               @id @db.Uuid
+  id              String               @id @default(uuid()) @db.Uuid
   name            String
   description     String?
   deadline        DateTime?
   accepted        Boolean              @default(false)
   created_by      String               @db.Uuid
-  created_by_user user_profile         @relation(fields: [created_by], references: [user_id])
+  created_by_user user_profile         @relation(fields: [created_by], references: [user_id], onDelete: Cascade)
   last_updated    DateTime             @updatedAt
   assignees       todo_assignee_user[]
 }
@@ -34,8 +34,8 @@ model todo_assignee_user {
   todo_id   String       @db.Uuid
   user_id   String       @db.Uuid
   completed Boolean      @default(false)
-  todo      todo         @relation(fields: [todo_id], references: [id])
-  user      user_profile @relation(fields: [user_id], references: [user_id])
+  todo      todo         @relation(fields: [todo_id], references: [id], onDelete: Cascade)
+  user      user_profile @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
   @@id([todo_id, user_id])
 }
