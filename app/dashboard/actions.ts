@@ -63,7 +63,7 @@ export async function getTodosManager(profile: user_profile): Promise<string | t
   } catch (e) {
     return 'Unexpected error'
   }
-
+  
   return result
 }
 

@@ -98,7 +98,7 @@ interface DataTableProps<TData, TValue> {
 export default function TodosEmployee({ data }: { data: {todos: todo[], profile: user_profile }}) {
   var data_filtered = [];
   for (var i = 0; i < data.todos.length; i++) {
-    data_filtered.push({name: data.todos[i].name, deadline: (data.todos[i].deadline === null ? null : data.todos[i].deadline!.toLocaleDateString("en-US")), todo_id: data.todos[i].id, profile: data.profile})
+    data_filtered.push({name: data.todos[i].name, deadline: (data.todos[i].deadline === null ? null : data.todos[i].deadline!.toLocaleDateString("en-US")), todo_id: data.todos[i].id, profile: data.profile, description: data.todos[i].description})
   }
 
   return (

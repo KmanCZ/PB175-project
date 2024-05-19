@@ -20,10 +20,13 @@ export function DeleteTodo(todo: todo) {
     if (error) {
       return toast(error);
     }
+    setOpenedDialog(false)
   };
 
+  const [openedDialog, setOpenedDialog] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={openedDialog} onOpenChange={setOpenedDialog}>
       <DialogTrigger asChild>
         <Button variant="link" size="icon">
           <XIcon className="h-4 w-4" color="red" />
@@ -180,9 +183,6 @@ export default function TodosManager({ input }: {input: {data: todo[], profile: 
         }
       }
     }
-    console.log(employees_filtered)
-    console.log("PUSHED DATA:")
-    console.log({name: input.data[i].name, description: input.data[i].description, deadline: (input.data[i].deadline === null ? null : input.data[i].deadline!.toLocaleDateString("en-US")), state: stateString, id: (input.moreInfo[i].completed === true ? "Waiting for check" : "Pending"), id: input.data[i].id, assignees: employees_filtered, employees: input.employees})
     data_filtered.push({name: input.data[i].name, description: input.data[i].description, deadline: (input.data[i].deadline === null ? null : input.data[i].deadline!.toLocaleDateString("en-US")), state: stateString, id: input.data[i].id, assignees: employees_filtered, employees: input.employees})
   }
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { todo, user_profile } from "@prisma/client";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import { toast } from "sonner";
 import { markTodoAsCompleted } from "./actions";
 import { profile } from "console";
@@ -17,10 +17,12 @@ export default function MarkAsCompleted({todo}: {todo: {name: string, deadline: 
     if (error) {
       return toast(error);
     }
+    setOpen(false);
   };
+  const [open, setOpen] = useState(false);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="link" size="icon">
           <CheckIcon className="h-4 w-4" />

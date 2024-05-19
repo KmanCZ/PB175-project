@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import { denyTodo } from "./actions";
 import { user_profile } from "@prisma/client";
 
@@ -15,10 +15,12 @@ export default function DenyTodo({todo}: {todo: {name: string, description: stri
       if (error) {
         return toast(error);
       }
+      setOpen(false);
     };
+    const [open, setOpen] = useState(false);
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button variant="link" size="icon">
               <XIcon className="h-4 w-4" />
