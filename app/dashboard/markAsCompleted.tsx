@@ -1,10 +1,9 @@
 'use client'
 
-import { todo, user_profile } from "@prisma/client";
+import { user_profile } from "@prisma/client";
 import { FormEvent, useState } from "react";
 import { toast } from "sonner";
 import { markTodoAsCompleted } from "./actions";
-import { profile } from "console";
 import { CheckIcon } from "lucide-react";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button";

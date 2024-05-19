@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
-import { todo, user_profile } from "@prisma/client"
+import { user_profile } from "@prisma/client"
 import { MoreVerticalIcon } from "lucide-react"
 
 export default function GetTodoInfo({todo: data}: {todo: {name: string, deadline: string | null, todo_id: string, profile: user_profile, description: string | undefined}}) {

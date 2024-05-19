@@ -1,8 +1,6 @@
 'use client'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
-import { CheckIcon, MoreVertical } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { todo, user_profile } from "@prisma/client"
 import GetTodoInfo from "./getTodoInfo"
 import MarkAsCompleted from "./markAsCompleted"

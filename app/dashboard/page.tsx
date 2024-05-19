@@ -38,15 +38,11 @@ export default async function DashboardPage() {
     if (typeof todos_data === "string") {
       return toast(todos_data)
     }
-    console.log("TODOS DATA:")
-    console.log(todos_data)
+    
     const connectingTables = await getMoreInfo(todos_data)
     if (typeof connectingTables === "string") {
       return toast(connectingTables)
     }
-
-    console.log("TODOS MORE DATA:")
-    console.log(connectingTables)
 
     todos = <TodosManager input={{data: todos_data, profile: profile, employees: employees, moreInfo: connectingTables}}/>
   } else {
