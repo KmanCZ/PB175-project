@@ -1,5 +1,10 @@
 # PB175 TODO APP
 
+## Autoři
+
+- [(536526) Kristián Řehoř](https://is.muni.cz/auth/osoba/536526)
+- [(536473) Lenka Janíková](https://is.muni.cz/auth/osoba/536473)
+
 ## Doporučené technické požadavky
 
 - Node.js verze 20.0.0 nebo vyšší
