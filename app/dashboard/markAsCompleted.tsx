@@ -10,10 +10,10 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Button } from "@/components/ui/button";
 
 
-export default function MarkAsCompleted({data}: {todo: {name: string, deadline: Date | null, todo_id: string, profile: user_profile}}) {
+export default function MarkAsCompleted({todo}: {todo: {name: string, deadline: Date | null, todo_id: string, profile: user_profile}}) {
   const onClick = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const error = await markTodoAsCompleted(data.todo.todo_id, data.todo.profile.user_id);
+    const error = await markTodoAsCompleted(todo.todo_id, todo.profile.user_id);
     if (error) {
       return toast(error);
     }

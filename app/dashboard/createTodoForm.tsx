@@ -19,7 +19,7 @@ import { createTodo } from "./actions";
 import { user_profile } from "@prisma/client";
 import { toast } from "sonner";
 
-export default function createTodoForm(profile: user_profile, employees: user_profile[], setOpen: Dispatch<SetStateAction<boolean>>) {
+export default function CreateTodoForm(profile: user_profile, employees: user_profile[], setOpen: Dispatch<SetStateAction<boolean>>) {
   const [pending, setPending] = useState(false);
   const form = useForm<createTodoType>({
     resolver: zodResolver(createTodoSchema),

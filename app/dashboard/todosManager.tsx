@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
-import createTodoForm from "./createTodoForm"
 import { XIcon } from "lucide-react"
 import { todo, todo_assignee_user, user_profile } from "@prisma/client"
 import { FormEvent, useState } from "react"
@@ -12,6 +11,7 @@ import { toast } from "sonner"
 import AcceptTodo from "./acceptTodo"
 import DenyTodo from "./denyTodo"
 import EditTodo from "./editTodo"
+import CreateTodoForm from "./createTodoForm"
 
 export function DeleteTodo(todo: todo) {
   const onClick = async (e: FormEvent<HTMLFormElement>) => {
@@ -59,14 +59,14 @@ export const columns: ColumnDef<any>[] = [
     accessorKey: "accept",
     header: "Accept",
     cell: ({ row }) => (
-      <AcceptTodo data={row.original} />
+      <AcceptTodo todo={row.original} />
     )
   },
   {
     accessorKey: "deny",
     header: "Deny",
     cell: ({ row }) => (
-      <DenyTodo data={row.original} />
+      <DenyTodo todo={row.original} />
     )
   },
   {
@@ -160,16 +160,16 @@ interface DataTableProps<TData, TValue> {
     )
   }
 
-export default function TodosManager({ input }: {data: todo[], profile: user_profile, employees: user_profile[], moreInfo: todo_assignee_user[]}) {
+export default function TodosManager({ input }: {input: {data: todo[], profile: user_profile, employees: user_profile[], moreInfo: todo_assignee_user[]}}) {
   var data_filtered = []
   for (var i = 0; i < input.data.length; i++) {
-    var employees: string[] = [];
+    var employees_filtered: user_profile[][] = [];
     for (var j = 0; j < input.moreInfo.length; j++) {
       if (input.moreInfo[j].todo_id == input.data[i].id) {
-        employees.push(input.employees.filter((employee: user_profile) => employee.user_id === input.moreInfo[j].user_id))
+        employees_filtered.push(input.employees.filter((employee: user_profile) => employee.user_id === input.moreInfo[j].user_id))
       }
     }
-    data_filtered.push({name: input.data[i].name, description: input.data[i].description, deadline: (input.data[i].deadline === null ? null : input.data[i].deadline.toLocaleDateString("en-US")), state: input.data[i].accepted === true ? "Accepted" : (input.moreInfo[i].completed === true ? "Waiting for check" : "Pending"), id: input.data[i].id, assignees: employees, employees: input.employees})
+    data_filtered.push({name: input.data[i].name, description: input.data[i].description, deadline: (input.data[i].deadline === null ? null : input.data[i].deadline!.toLocaleDateString("en-US")), state: input.data[i].accepted === true ? "Accepted" : (input.moreInfo[i].completed === true ? "Waiting for check" : "Pending"), id: input.data[i].id, assignees: employees_filtered, employees: input.employees})
   }
 
   const [open, setOpen] = useState(false);
@@ -187,7 +187,7 @@ export default function TodosManager({ input }: {data: todo[], profile: user_pro
               Fill in the needed information to create a new todo.
             </DialogDescription>
           </DialogHeader>
-          {createTodoForm(input.profile, input.employees, setOpen)}
+          {CreateTodoForm(input.profile, input.employees, setOpen)}
         </DialogContent>
       </Dialog>
       <DataTable columns={columns} data={data_filtered} />

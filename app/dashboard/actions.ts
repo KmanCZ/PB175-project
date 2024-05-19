@@ -196,9 +196,11 @@ export async function acceptTodo(id: string): Promise<string | void> {
 }
 
 export async function denyTodo(id: string): Promise<string | void> {
+  console.log("AND HERE")
+  console.log(id)
   try {
     await prisma.$transaction(async () =>{
-      await prisma.todo_assignee_user.updateMany({
+      var todos = await prisma.todo_assignee_user.updateMany({
         where: {
           todo_id: id
         },
@@ -229,13 +231,8 @@ export async function updateTodo(todo_id: string, name: string, description: str
         }
       })
 
-
-      console.log("NEW TODO HERE")
-      console.log(newTodo)
-
       var data: {todo_id: string, user_id: string}[] = []
       for (var i = 0; i < assignees.length; i++) {
-        console.log(assignees[i])
         data.push({todo_id: todo_id, user_id: assignees[i]})
       }
 

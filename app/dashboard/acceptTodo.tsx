@@ -6,11 +6,12 @@ import { Button } from "@/components/ui/button";
 import { CheckIcon } from "lucide-react";
 import { FormEvent } from "react";
 import { acceptTodo } from "./actions";
+import { user_profile } from "@prisma/client";
 
-export default function AcceptTodo({data}: {id: string}) {
+export default function AcceptTodo({todo}: {todo: {name: string, description: string | undefined, deadline: string | null, state: string, id: string, assignees: user_profile[][], employees: user_profile[]}}) {
     const onClick = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      const error = await acceptTodo(data.id);
+      const error = await acceptTodo(todo.id);
       if (error) {
         return toast(error);
       }
