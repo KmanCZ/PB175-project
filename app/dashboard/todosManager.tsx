@@ -163,13 +163,27 @@ interface DataTableProps<TData, TValue> {
 export default function TodosManager({ input }: {input: {data: todo[], profile: user_profile, employees: user_profile[], moreInfo: todo_assignee_user[]}}) {
   var data_filtered = []
   for (var i = 0; i < input.data.length; i++) {
-    var employees_filtered: user_profile[][] = [];
+    var employees_filtered: user_profile[] = [];
+    var stateString: string | null = null;
+    if (input.data[i].accepted) {
+      stateString = "Accepted"
+    }
     for (var j = 0; j < input.moreInfo.length; j++) {
       if (input.moreInfo[j].todo_id == input.data[i].id) {
-        employees_filtered.push(input.employees.filter((employee: user_profile) => employee.user_id === input.moreInfo[j].user_id))
+        employees_filtered.push(input.employees.find(employee => employee.user_id === input.moreInfo[j].user_id)!)
+        if (stateString === null) {
+          if (input.moreInfo[j].completed === true) {
+            stateString = "Waiting for check"
+          } else {
+            stateString = "Pending"
+          }
+        }
       }
     }
-    data_filtered.push({name: input.data[i].name, description: input.data[i].description, deadline: (input.data[i].deadline === null ? null : input.data[i].deadline!.toLocaleDateString("en-US")), state: input.data[i].accepted === true ? "Accepted" : (input.moreInfo[i].completed === true ? "Waiting for check" : "Pending"), id: input.data[i].id, assignees: employees_filtered, employees: input.employees})
+    console.log(employees_filtered)
+    console.log("PUSHED DATA:")
+    console.log({name: input.data[i].name, description: input.data[i].description, deadline: (input.data[i].deadline === null ? null : input.data[i].deadline!.toLocaleDateString("en-US")), state: stateString, id: (input.moreInfo[i].completed === true ? "Waiting for check" : "Pending"), id: input.data[i].id, assignees: employees_filtered, employees: input.employees})
+    data_filtered.push({name: input.data[i].name, description: input.data[i].description, deadline: (input.data[i].deadline === null ? null : input.data[i].deadline!.toLocaleDateString("en-US")), state: stateString, id: input.data[i].id, assignees: employees_filtered, employees: input.employees})
   }
 
   const [open, setOpen] = useState(false);

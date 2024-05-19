@@ -20,15 +20,14 @@ import { Calendar } from "@/components/ui/calendar"
 import { updateTodo } from "./actions"
 import { user_profile } from "@prisma/client"
 
-export default function EditTodo({todo}: {todo: {name: string, description: string | undefined, deadline: string | null, state: string, id: string, assignees: user_profile[][], employees: user_profile[]}}) {
+export default function EditTodo({todo}: {todo: {name: string, description: string | undefined, deadline: string | null, state: string, id: string, assignees: user_profile[], employees: user_profile[]}}) {
+  console.log(todo)
   const [pending, setPending] = useState(false);
   const [open, setOpen] = useState(false);
   var assignees_ids: string[] = []
   for (var i = 0; i < todo.assignees.length; i++) {
-    console.log("ASSIGNEE I")
-    console.log(todo.assignees[i])
-    assignees_ids.push(todo.assignees[i][0].user_id)
-    console.log(todo.assignees[i][0].user_id)
+    assignees_ids.push(todo.assignees[i].user_id)
+    console.log(todo.assignees[i].user_id)
   }
   const form = useForm<createTodoType>({
     resolver: zodResolver(createTodoSchema),
@@ -49,7 +48,6 @@ export default function EditTodo({todo}: {todo: {name: string, description: stri
         return toast(error);
       }
       setOpen(false);
-      form.reset()
     });
 
     return (
