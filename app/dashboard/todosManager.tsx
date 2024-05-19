@@ -169,7 +169,7 @@ export default function TodosManager({ input }: {data: todo[], profile: user_pro
         employees.push(input.employees.filter((employee: user_profile) => employee.user_id === input.moreInfo[j].user_id))
       }
     }
-    data_filtered.push({name: input.data[i].name, description: input.data[i].destription, deadline: (input.data[i].deadline === null ? null : input.data[i].deadline.toLocaleDateString("en-US")), state: input.data[i].accepted === true ? "Accepted" : (input.moreInfo[i].completed === true ? "Waiting for check" : "Pending"), id: input.data[i].id, assignees: employees, employees: input.employees})
+    data_filtered.push({name: input.data[i].name, description: input.data[i].description, deadline: (input.data[i].deadline === null ? null : input.data[i].deadline.toLocaleDateString("en-US")), state: input.data[i].accepted === true ? "Accepted" : (input.moreInfo[i].completed === true ? "Waiting for check" : "Pending"), id: input.data[i].id, assignees: employees, employees: input.employees})
   }
 
   const [open, setOpen] = useState(false);

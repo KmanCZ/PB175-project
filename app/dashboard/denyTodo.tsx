@@ -8,7 +8,6 @@ import { FormEvent } from "react";
 import { denyTodo } from "./actions";
 
 export default function DenyTodo({data}: {id: string}) {
-    console.log(data.id)
     const onClick = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const error = await denyTodo(data.id);

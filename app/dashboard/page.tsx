@@ -38,9 +38,7 @@ export default async function DashboardPage() {
     if (typeof todos_data === "string") {
       return toast(todos_data)
     }
-
     const connectingTables = await getMoreInfo(todos_data)
-    console.log(connectingTables)
     if (typeof connectingTables === "string") {
       return toast(connectingTables)
     }

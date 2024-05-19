@@ -8,7 +8,6 @@ import { FormEvent } from "react";
 import { acceptTodo } from "./actions";
 
 export default function AcceptTodo({data}: {id: string}) {
-    console.log(data.id)
     const onClick = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const error = await acceptTodo(data.id);
