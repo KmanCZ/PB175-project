@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
-import { XIcon } from "lucide-react"
+import { XIcon, CirclePlus } from "lucide-react"
 import { todo, todo_assignee_user, user_profile } from "@prisma/client"
 import { FormEvent, useState } from "react"
 import { deleteTodo } from "./actions"
@@ -104,7 +104,7 @@ interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
   }
-   
+
   export function DataTable<TData, TValue>({
     columns,
     data,
@@ -114,7 +114,7 @@ interface DataTableProps<TData, TValue> {
       columns,
       getCoreRowModel: getCoreRowModel(),
     })
-   
+
     return (
       <div className="rounded-md border">
         <Table>
@@ -189,23 +189,24 @@ export default function TodosManager({ input }: {input: {data: todo[], profile: 
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="container mx-auto py-10">
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button variant="outline">Add todo</Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>New todo</DialogTitle>
-            <DialogDescription>
-              Fill in the needed information to create a new todo.
-            </DialogDescription>
-          </DialogHeader>
-          {CreateTodoForm(input.profile, input.employees, setOpen)}
-        </DialogContent>
-      </Dialog>
+    <div className="container mx-auto pb-10 pt-2">
+      <div className="flex justify-end mb-2">
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <Button><CirclePlus className="mr-1" /> Add todo</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>New todo</DialogTitle>
+              <DialogDescription>
+                Fill in the needed information to create a new todo.
+              </DialogDescription>
+            </DialogHeader>
+            {CreateTodoForm(input.profile, input.employees, setOpen)}
+          </DialogContent>
+        </Dialog>
+      </div>
       <DataTable columns={columns} data={data_filtered} />
     </div>
   )
 }
-  
